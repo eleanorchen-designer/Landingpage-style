@@ -1,0 +1,15 @@
+{
+  "name": "landingpage-style",
+  "owner": { "name": "Landingpage Style" },
+  "metadata": {
+    "description": "活動頁與 landing page 的共用風格"
+  },
+  "plugins": [
+    {
+      "name": "landingpage-style",
+      "source": "./plugins/landingpage-style",
+      "description": "三套頁面風格（手繪風、科技風格、簡約風）與手繪風用的 riso 網點插畫工具",
+      "version": "1.1.0"
+    }
+  ]
+}

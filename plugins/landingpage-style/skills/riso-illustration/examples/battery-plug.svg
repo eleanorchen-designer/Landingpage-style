@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="790" height="870" viewBox="0 0 790 870">
+<!-- riso-illustration example: "a battery being charged by a plug". Render: node scripts/render.mjs examples/battery-plug.svg -->
+<defs>
+  <!-- object silhouette, reused for clip + edge shading -->
+  <path id="body" d="M98 196 Q98 170 124 170 H454 Q480 170 480 196 V770 Q480 792 458 792 H120 Q98 792 98 770 Z"/>
+  <clipPath id="bodyClip"><use href="#body"/></clipPath>
+  <linearGradient id="bodyDeep" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0.45" stop-color="#033F50" stop-opacity="0"/><stop offset="1" stop-color="#033F50" stop-opacity="0.75"/>
+  </linearGradient>
+  <linearGradient id="bodyFoot" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0.82" stop-color="#022C3A" stop-opacity="0"/><stop offset="1" stop-color="#022C3A" stop-opacity="0.9"/>
+  </linearGradient>
+  <linearGradient id="plugShade" x1="0.2" y1="0" x2="0.6" y2="1">
+    <stop offset="0.1" stop-color="#4A4A4A" stop-opacity="0"/><stop offset="0.6" stop-color="#4A4A4A" stop-opacity="0.32"/><stop offset="1" stop-color="#4A4A4A" stop-opacity="0.7"/>
+  </linearGradient>
+  <linearGradient id="wedge" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#4A4A4A" stop-opacity="0.85"/><stop offset="1" stop-color="#4A4A4A" stop-opacity="0.05"/>
+  </linearGradient>
+  <linearGradient id="cableShade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0B86B0" stop-opacity="0.2"/><stop offset="1" stop-color="#0B86B0" stop-opacity="0.95"/>
+  </linearGradient>
+</defs>
+
+<!-- 1. flat background, never textured -->
+<rect width="790" height="870" fill="#F3F5F9"/>
+
+<g filter="url(#riso-grain)">
+  <!-- 2. HERO: battery body (green) -->
+  <!-- misregistration sliver: pale copy nudged up-left -->
+  <use href="#body" x="-5" y="-4" fill="#CFEAF1" filter="url(#riso-rough)"/>
+  <g clip-path="url(#bodyClip)">
+    <use href="#body" fill="#05556C" filter="url(#riso-rough)"/>
+    <rect x="98" y="170" width="382" height="622" fill="url(#bodyDeep)"/>
+    <!-- base dot screen across the whole object -->
+    <use href="#body" fill="#022C3A" fill-opacity="0.34" filter="url(#riso-ht)"/>
+    <!-- colour layering: blue dry-brush wash + rare pale ridges, rotated to the -35° stroke direction -->
+    <g transform="rotate(-35 290 480)">
+      <rect x="-120" y="120" width="820" height="760" fill="#17BAE8" opacity="0.62" filter="url(#riso-drybrush)"/>
+      <rect x="-120" y="120" width="820" height="760" fill="#E4F7EE" opacity="0.4" filter="url(#riso-ridges)"/>
+    </g>
+    <!-- shading: halftone bands on the bottom/right edges -->
+    <use href="#body" fill="#022C3A" filter="url(#riso-edge-ht)"/>
+    <rect x="98" y="660" width="382" height="132" fill="url(#bodyFoot)" filter="url(#riso-ht-coarse)"/>
+  </g>
+  <!-- mint glass highlight strip (lighter translucent layer) -->
+  <rect x="128" y="206" width="34" height="372" rx="17" fill="#8ED6E8" fill-opacity="0.8" filter="url(#riso-rough)"/>
+  <!-- terminal cap -->
+  <path d="M214 124 Q214 112 226 112 H354 Q366 112 366 124 V172 H214 Z" fill="#033F50" filter="url(#riso-rough)"/>
+  <rect x="214" y="150" width="152" height="22" fill="#022C3A" fill-opacity="0.9" filter="url(#riso-ht-fine)"/>
+  <!-- solid dark block: lightning bolt -->
+  <path d="M302 236 L208 404 H280 L246 548 L362 352 H288 L322 236 Z" fill="#9FDDF0" filter="url(#riso-rough)"/>
+  <!-- charge level lines -->
+  <g stroke="#9FDDF0" stroke-width="5.5" stroke-linecap="round" fill="none" filter="url(#riso-line)">
+    <path d="M150 622 H300 M150 680 H420 M150 738 H392"/>
+  </g>
+
+  <!-- 3. SECONDARY: warm grey-white plug, overlapping the hero from the right.
+       Authored in canvas coordinates and rotated around a canvas point, so halftone filters stay aligned. -->
+  <g transform="rotate(-32 575 575)">
+    <!-- prongs -->
+    <rect x="368" y="516" width="104" height="22" rx="7" fill="#C2C5C8" filter="url(#riso-rough)"/>
+    <rect x="368" y="611" width="104" height="22" rx="7" fill="#C2C5C8" filter="url(#riso-rough)"/>
+    <rect x="368" y="527" width="104" height="11" fill="#4A4A4A" fill-opacity="0.45" filter="url(#riso-ht-fine)"/>
+    <rect x="368" y="622" width="104" height="11" fill="#4A4A4A" fill-opacity="0.45" filter="url(#riso-ht-fine)"/>
+    <!-- body: warm grey-white with crumpled-paper mottling -->
+    <path d="M463 480 Q463 452 491 452 H631 Q715 452 737 533 L751 575 L737 617 Q715 698 631 698 H491 Q463 698 463 670 Z" fill="#EAE9E6" filter="url(#riso-crumple)"/>
+    <!-- light base dot screen across the whole grey object -->
+    <path d="M463 480 Q463 452 491 452 H631 Q715 452 737 533 L751 575 L737 617 Q715 698 631 698 H491 Q463 698 463 670 Z" fill="#4A4A4A" fill-opacity="0.2" filter="url(#riso-ht)"/>
+    <!-- halftone shading toward the shadow side (bottom) -->
+    <path d="M463 480 Q463 452 491 452 H631 Q715 452 737 533 L751 575 L737 617 Q715 698 631 698 H491 Q463 698 463 670 Z" fill="url(#plugShade)" filter="url(#riso-ht-fine)"/>
+    <!-- darker tonal patch where the body turns into the neck -->
+    <path d="M666 505 Q715 547 723 603 Q701 673 645 687 Q701 610 666 505 Z" fill="#4A4A4A" fill-opacity="0.6" filter="url(#riso-ht-fine)"/>
+    <!-- halftone wedges hugging the contour lines (shadow side of each fold) -->
+    <path d="M536 520 Q546 562 538 604 L560 600 Q566 560 536 520 Z" fill="url(#wedge)" filter="url(#riso-ht-fine)"/>
+    <path d="M570 512 Q581 560 574 616 L604 606 Q604 556 570 512 Z" fill="url(#wedge)" filter="url(#riso-ht-fine)"/>
+    <!-- thin graphite contour lines: few and short, only where form folds -->
+    <g stroke="#383838" stroke-width="2.6" stroke-linecap="round" fill="none" filter="url(#riso-line)">
+      <path d="M534 520 Q541 562 536 604"/>
+      <path d="M568 512 Q576 560 572 616"/>
+      <path d="M704 532 Q730 575 706 620"/>
+    </g>
+  </g>
+
+  <!-- 4. ACCENT OBJECT: cobalt cable leaving through the bottom edge -->
+  <path d="M716 490 C756 512 762 572 738 636 C712 706 694 790 708 890" fill="none" stroke="#17BAE8" stroke-width="26" stroke-linecap="round" filter="url(#riso-rough)"/>
+  <path d="M726 496 C766 518 772 578 748 642 C722 712 704 796 718 896" fill="none" stroke="url(#cableShade)" stroke-width="10" filter="url(#riso-ht-fine)"/>
+  <path d="M712 500 C744 520 748 570 730 622" fill="none" stroke="#C9F1FC" stroke-width="3" stroke-linecap="round" filter="url(#riso-line)"/>
+
+  <!-- 5. THE ONE ACCENT LINE: lime spark scribble from the prong tip, looping up past the top of the battery -->
+  <path d="M372 640 C336 628 300 606 292 570 C284 526 344 506 336 546 C328 586 262 572 262 512 C262 446 226 398 218 340 C210 282 262 252 236 222 C208 192 170 250 204 252 C244 254 226 170 200 128 C184 100 150 96 148 72 C146 56 160 52 170 60"
+        fill="none" stroke="#FFCB52" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" filter="url(#riso-line)"/>
+</g>
+</svg>

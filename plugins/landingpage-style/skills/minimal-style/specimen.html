@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>簡約風</title>
+<meta name="description" content="簡約風設計系統：色彩、字級、版面、層次、形狀與元件。對應 DESIGN.md。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ── Tokens（與 DESIGN.md frontmatter 一致）── */
+  :root {
+    --teal-50: #e6f2f4;
+    --teal-100: #cce4e8;
+    --teal-600: #00788c;
+    --teal-700: #05556c;
+    --teal-900: #033d4e;
+    --white: #ffffff;
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+
+    --band: rgb(248 250 252 / 0.7);
+    --hairline: rgb(226 232 240 / 0.8);
+
+    --r-xs: 4px; --r-sm: 6px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px; --r-full: 9999px;
+
+    --shadow-hairline: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-hover: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-dialog: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --font: "Inter", "Noto Sans TC", system-ui, -apple-system, sans-serif;
+    --code: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 120px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+  body {
+    margin: 0; background: var(--white); color: var(--slate-900);
+    font-family: var(--font); font-size: 16px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--teal-100); color: var(--teal-900); }
+  :focus-visible { outline: 2px solid var(--teal-600); outline-offset: 2px; }
+  h1, h2, h3, h4, p { margin: 0; }
+  a { color: inherit; }
+  code {
+    font-family: var(--code); font-size: 0.86em; color: var(--slate-700);
+    background: var(--slate-100); padding: 1px 5px; border-radius: var(--r-xs);
+  }
+  html { scrollbar-color: var(--slate-300) transparent; }
+
+  .wrap { max-width: 1152px; margin: 0 auto; padding: 0 20px; }
+  @media (min-width: 640px) { .wrap { padding: 0 32px; } }
+
+  /* ── Header ── */
+  .hdr {
+    position: sticky; top: 0; z-index: 40;
+    background: rgb(255 255 255 / 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .hdr-row { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--teal-600); transition: transform .15s var(--ease); }
+  .brand:hover .brand-dot { transform: scale(1.25); }
+  .brand-name { font-weight: 700; font-size: 18px; letter-spacing: -0.025em; }
+  .brand-sub { display: none; font-size: 12px; font-weight: 500; color: var(--slate-500); border-left: 1px solid var(--slate-200); padding-left: 10px; }
+  @media (min-width: 640px) { .brand-sub { display: inline-block; } }
+  .hdr-src { font-size: 12px; color: var(--slate-500); white-space: nowrap; }
+  .toc { border-top: 1px solid var(--hairline); }
+  .toc ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 28px; overflow-x: auto; scrollbar-width: none; height: 44px; align-items: center; }
+  .toc ul::-webkit-scrollbar { display: none; }
+  .toc a { font-size: 14px; font-weight: 500; color: var(--slate-600); text-decoration: none; white-space: nowrap; transition: color .15s var(--ease); }
+  .toc a:hover, .toc a[aria-current="true"] { color: var(--slate-900); }
+  .toc a[aria-current="true"] { box-shadow: inset 0 -2px 0 var(--teal-600); padding-bottom: 11px; padding-top: 13px; }
+
+  /* ── Sections ── */
+  section { padding: 80px 0; border-bottom: 1px solid var(--hairline); }
+  section.band { background: var(--band); }
+  @media (min-width: 640px) { section { padding: 96px 0; } }
+  .sec-head { max-width: 672px; margin-bottom: 48px; }
+  @media (min-width: 640px) { .sec-head { margin-bottom: 64px; } }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--teal-700); margin-bottom: 8px; }
+  .h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.25; text-wrap: balance; }
+  @media (min-width: 640px) { .h2 { font-size: 30px; } }
+  .sec-head p.desc { margin-top: 12px; color: var(--slate-600); line-height: 1.625; }
+  .sub { font-size: 16px; font-weight: 700; margin: 56px 0 20px; letter-spacing: -0.01em; }
+  .sub:first-child { margin-top: 0; }
+  .note { font-size: 14px; line-height: 1.625; color: var(--slate-600); }
+  .muted { color: var(--slate-500); }
+
+  /* ── Hero ── */
+  .hero { padding: 64px 0 80px; }
+  @media (min-width: 640px) { .hero { padding: 96px 0 112px; } }
+  .hero-grid { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 1024px) { .hero-grid { grid-template-columns: 7fr 5fr; gap: 40px; } }
+  .badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: var(--r-full); background: var(--slate-100); border: 1px solid var(--slate-200); font-size: 12px; font-weight: 500; color: var(--slate-700); }
+  .h1 { margin-top: 24px; font-size: 30px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.2; text-wrap: balance; }
+  @media (min-width: 640px) { .h1 { font-size: 36px; } }
+  @media (min-width: 1024px) { .h1 { font-size: 42px; } }
+  .lead { margin-top: 24px; font-size: 18px; font-weight: 500; line-height: 1.625; color: var(--teal-700); }
+  @media (min-width: 640px) { .lead { font-size: 20px; } }
+  .hero-desc { margin-top: 24px; max-width: 672px; color: var(--slate-600); line-height: 1.625; }
+  .chars { margin: 28px 0 0; padding: 20px 0 0; list-style: none; border-top: 1px solid var(--slate-200); display: grid; gap: 12px; }
+  .chars li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.625; color: var(--slate-600); }
+
+  .dot6 { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-600); margin-top: 8px; flex: none; }
+
+  /* ── Architecture panel（招牌元件）── */
+  .arch {
+    border: 1px solid var(--slate-200); border-radius: var(--r-xl); padding: 24px;
+    background-color: var(--band);
+    background-image: radial-gradient(var(--slate-300) 1px, transparent 1px); background-size: 24px 24px;
+  }
+  @media (min-width: 640px) { .arch { padding: 32px; } }
+  .arch-top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--slate-500); }
+  .arch-top .live { color: var(--teal-700); text-transform: none; letter-spacing: 0; }
+  .node { background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-lg); padding: 16px; box-shadow: var(--shadow-hairline); display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .node-tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-xs); background: var(--teal-50); color: var(--teal-700); }
+  .node-tag.grey { background: var(--slate-100); color: var(--slate-700); }
+  .node .nt { display: block; font-size: 14px; font-weight: 700; margin-top: 6px; }
+  .node p { font-size: 12px; color: var(--slate-500); margin-top: 4px; line-height: 1.5; }
+  .ico { width: 36px; height: 36px; border-radius: var(--r-md); display: grid; place-items: center; flex: none; background: var(--slate-100); color: var(--slate-700); }
+  .ico.g { background: var(--teal-50); color: var(--teal-700); }
+  .ico svg { width: 20px; height: 20px; }
+  .link { margin: 12px 0; display: flex; flex-direction: column; align-items: center; }
+  .link i { display: block; width: 1px; height: 16px; background: var(--slate-300); }
+  .link span { padding: 4px 12px; border-radius: var(--r-full); background: var(--white); border: 1px solid var(--slate-200); font-size: 11px; font-weight: 500; color: var(--slate-600); box-shadow: var(--shadow-hairline); text-align: center; }
+  .metrics { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--hairline); display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+  .metrics > div { padding: 0 4px; }
+  .metrics > div + div { border-left: 1px solid var(--slate-200); }
+  .metrics b { display: block; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .metrics b.g { color: var(--teal-700); }
+  .metrics small { font-size: 11px; color: var(--slate-500); }
+
+  /* ── Colors ── */
+  .swatches { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .sw { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); overflow: hidden; transition: border-color .15s var(--ease); }
+  .sw:hover { border-color: var(--slate-300); }
+  .sw:focus-visible { outline: 2px solid var(--teal-600); outline-offset: 2px; }
+  .sw-chip { height: 88px; border-bottom: 1px solid var(--slate-200); display: flex; align-items: flex-end; padding: 10px 12px; font-size: 12px; font-weight: 600; }
+  .sw-body { padding: 14px 16px 16px; display: grid; gap: 4px; }
+  .sw-name { font-size: 14px; font-weight: 700; }
+  .sw-hex { font-size: 12px; color: var(--slate-500); font-variant-numeric: tabular-nums; display: flex; justify-content: space-between; gap: 8px; }
+  .sw-role { font-size: 12px; color: var(--slate-600); line-height: 1.5; margin-top: 4px; }
+  .cr { font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: var(--r-xs); background: var(--slate-100); color: var(--slate-700); font-variant-numeric: tabular-nums; }
+  .cr.pass { background: var(--teal-50); color: var(--teal-700); }
+  .cr.fail { background: #fef2f2; color: #b91c1c; }
+
+  .rule { margin-top: 32px; background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); padding: 24px; display: grid; gap: 16px; }
+  @media (min-width: 768px) { .rule { grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px; } }
+  .rule h3 { font-size: 16px; font-weight: 700; }
+  .rule p { font-size: 14px; line-height: 1.625; color: var(--slate-600); margin-top: 6px; }
+  .rule-label { font-size: 12px; font-weight: 600; color: var(--teal-700); }
+
+  /* ── Typography ── */
+  .type-row { display: grid; gap: 12px; padding: 28px 0; border-top: 1px solid var(--slate-200); }
+  .type-row:last-child { border-bottom: 1px solid var(--slate-200); }
+  @media (min-width: 768px) { .type-row { grid-template-columns: 200px 1fr; gap: 32px; align-items: baseline; } }
+  .type-meta b { display: block; font-size: 14px; font-weight: 700; }
+  .type-meta span { display: block; font-size: 12px; color: var(--slate-500); margin-top: 4px; line-height: 1.6; font-variant-numeric: tabular-nums; }
+  .t-display { font-size: 30px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.2; }
+  @media (min-width: 640px) { .t-display { font-size: 36px; } }
+  @media (min-width: 1024px) { .t-display { font-size: 42px; } }
+  .t-headline { font-size: 24px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.25; }
+  @media (min-width: 640px) { .t-headline { font-size: 30px; } }
+  .t-lead { font-size: 18px; font-weight: 500; line-height: 1.625; color: var(--teal-700); }
+  @media (min-width: 640px) { .t-lead { font-size: 20px; } }
+  .t-title { font-size: 18px; font-weight: 700; line-height: 1.375; }
+  .t-body { font-size: 16px; line-height: 1.625; color: var(--slate-600); max-width: 672px; }
+  .t-sm { font-size: 14px; line-height: 1.625; color: var(--slate-600); max-width: 600px; }
+  .t-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--teal-700); }
+  .t-micro { font-size: 11px; font-weight: 500; color: var(--slate-500); }
+  .fonts { display: grid; gap: 16px; margin-bottom: 40px; }
+  @media (min-width: 768px) { .fonts { grid-template-columns: 1fr 1fr; } }
+  .font-card { border: 1px solid var(--slate-200); border-radius: var(--r-xl); padding: 24px; background: var(--white); }
+  .font-card .big { font-size: 48px; font-weight: 700; letter-spacing: -0.025em; line-height: 1; }
+  .font-card .wts { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; font-size: 14px; color: var(--slate-600); }
+
+  /* ── Layout diagrams ── */
+  .widths { display: grid; gap: 14px; }
+  .wbar { height: 40px; border-radius: var(--r-md); background: var(--white); border: 1px solid var(--slate-200); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 12px; color: var(--slate-600); gap: 8px; min-width: 0; }
+  .wbar b { color: var(--slate-900); font-weight: 600; white-space: nowrap; }
+  .wbar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .wbar.g { border-color: var(--teal-600); background: var(--teal-50); }
+  .grids { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .grids { grid-template-columns: 1fr 1fr; } }
+  .gdemo { background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); padding: 20px; }
+  .gdemo h4 { font-size: 14px; font-weight: 700; }
+  .gdemo p { font-size: 12px; color: var(--slate-500); margin-top: 4px; line-height: 1.6; }
+  .gcols { display: grid; gap: 6px; margin-top: 16px; }
+  .gcols i { display: block; height: 48px; border-radius: var(--r-sm); background: var(--slate-100); border: 1px solid var(--slate-200); }
+  .gcols i.g { background: var(--teal-50); border-color: var(--teal-100); }
+  .rhythm { border: 1px solid var(--slate-200); border-radius: var(--r-xl); overflow: hidden; background: var(--white); }
+  .rh { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--hairline); font-size: 13px; color: var(--slate-600); }
+  .rh:last-child { border-bottom: 0; }
+  .rh.b { background: var(--band); }
+  .rh b { color: var(--slate-900); font-weight: 600; }
+  table.spec { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  table.spec th { text-align: left; font-size: 12px; font-weight: 600; color: var(--slate-500); padding: 0 12px 10px 0; border-bottom: 1px solid var(--slate-200); }
+  table.spec td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--slate-100); color: var(--slate-600); vertical-align: top; }
+  table.spec td:first-child { color: var(--slate-900); font-weight: 600; white-space: nowrap; }
+  .scroll-x { overflow-x: auto; }
+
+  /* ── Elevation & Shapes ── */
+  .three { display: grid; gap: 16px; }
+  @media (min-width: 768px) { .three { grid-template-columns: repeat(3, 1fr); } }
+  .elev { background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); padding: 24px; min-height: 160px; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+  .elev h3 { font-size: 14px; font-weight: 700; }
+  .elev p { font-size: 12px; color: var(--slate-500); line-height: 1.6; }
+  .elev code { font-size: 11px; display: block; white-space: normal; word-break: break-all; padding: 6px 8px; margin-top: 8px; }
+  .elev.flat { box-shadow: none; }
+  .elev.s1 { box-shadow: var(--shadow-hairline); }
+  .elev.s2 { box-shadow: var(--shadow-hover); }
+  .elev.s3 { box-shadow: var(--shadow-dialog); }
+  .four { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .four { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .four { grid-template-columns: repeat(4, 1fr); } }
+  .radii { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .rad { display: grid; gap: 12px; }
+  .rad i { display: block; height: 96px; background: var(--white); border: 1px solid var(--slate-300); }
+  .rad b { font-size: 14px; font-weight: 700; display: block; }
+  .rad span { font-size: 12px; color: var(--slate-500); line-height: 1.5; }
+
+  /* ── Components ── */
+  .comp { background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); overflow: hidden; }
+  .comp + .comp { margin-top: 24px; }
+  .comp-head { padding: 16px 24px; border-bottom: 1px solid var(--slate-100); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+  .comp-head h3 { font-size: 16px; font-weight: 700; }
+  .comp-head span { font-size: 12px; color: var(--slate-500); }
+  .comp-body { padding: 24px; }
+  @media (min-width: 640px) { .comp-body { padding: 32px; } }
+  .stage { display: flex; flex-wrap: wrap; gap: 24px 20px; align-items: flex-end; }
+  .spec-item { display: grid; gap: 10px; justify-items: start; }
+  .spec-item > small { font-size: 12px; font-weight: 500; color: var(--slate-500); }
+
+  .btn { font: inherit; font-weight: 500; font-size: 14px; line-height: 1.5; cursor: pointer; border-radius: var(--r-lg); padding: 14px 24px; border: 1px solid transparent; transition: background-color .15s var(--ease), box-shadow .15s var(--ease), color .15s var(--ease); }
+  @media (min-width: 640px) { .btn { font-size: 16px; } }
+  .btn-p { background: var(--slate-900); color: var(--white); box-shadow: var(--shadow-hairline); }
+  .btn-p:hover, .btn-p.is-hover { background: var(--teal-700); box-shadow: var(--shadow-hover); }
+  .btn-s { background: var(--white); color: var(--slate-800); border-color: var(--slate-300); }
+  .btn-s:hover, .btn-s.is-hover { background: var(--slate-50); }
+  .btn-c { font-size: 12px; padding: 8px 16px; border-radius: var(--r-md); background: var(--slate-900); color: var(--white); }
+  @media (min-width: 640px) { .btn-c { font-size: 14px; } }
+  .btn-c:hover { background: var(--teal-700); }
+  .btn.is-focus { outline: 2px solid var(--teal-600); outline-offset: 2px; }
+
+  .tag-pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: var(--r-full); background: var(--teal-50); color: var(--teal-700); }
+  .num-chip { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; padding: 4px 10px; border-radius: var(--r-sm); background: var(--slate-100); color: var(--slate-600); }
+  .hl-row { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 12px; font-weight: 500; color: var(--slate-500); }
+
+  .field { display: grid; gap: 4px; width: 100%; max-width: 320px; }
+  .field label { font-size: 12px; font-weight: 500; color: var(--slate-700); }
+  .field input { font: inherit; font-size: 14px; padding: 10px 14px; border-radius: var(--r-md); border: 1px solid var(--slate-300); background: var(--white); color: var(--slate-900); width: 100%; transition: border-color .15s var(--ease), box-shadow .15s var(--ease); }
+  .field input::placeholder { color: var(--slate-500); }
+  .field input:focus, .field input.is-focus { outline: 2px solid transparent; outline-offset: 0; border-color: var(--teal-600); box-shadow: 0 0 0 1px var(--teal-600), 0 0 0 4px var(--teal-100); }
+  .fields { display: grid; gap: 24px; }
+  @media (min-width: 768px) { .fields { grid-template-columns: repeat(2, minmax(0, 320px)); } }
+
+  .cards2 { display: grid; gap: 24px; }
+  @media (min-width: 768px) { .cards2 { grid-template-columns: 1fr 1fr; gap: 32px; } }
+  .card { background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); padding: 24px; transition: border-color .15s var(--ease); }
+  @media (min-width: 640px) { .card { padding: 32px; } }
+  .card.pain { display: flex; flex-direction: column; justify-content: space-between; }
+  .card.pain:hover { border-color: var(--slate-300); }
+  .card.pain h4 { font-size: 18px; font-weight: 700; line-height: 1.375; margin: 16px 0; }
+  .card .sol { padding-top: 16px; border-top: 1px solid var(--slate-100); }
+  .card .sol-l { font-size: 12px; font-weight: 600; color: var(--teal-700); margin-bottom: 6px; }
+  .card .sol p, .card .sum { font-size: 14px; line-height: 1.625; color: var(--slate-600); }
+  .card.pillar h4 { font-size: 20px; font-weight: 700; margin-top: 16px; letter-spacing: -0.01em; }
+  @media (min-width: 640px) { .card.pillar h4 { font-size: 24px; } }
+  .card .sum { margin-top: 8px; }
+  .feats { list-style: none; margin: 24px 0 0; padding: 24px 0 0; border-top: 1px solid var(--slate-100); display: grid; gap: 16px; }
+  .feats li { display: flex; gap: 12px; }
+  .feats b { display: block; font-size: 14px; font-weight: 700; }
+  .feats span { display: block; font-size: 14px; color: var(--slate-600); line-height: 1.625; margin-top: 2px; }
+  .steps { display: grid; gap: 24px; margin-top: 24px; }
+  @media (min-width: 640px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+  .card.step { padding: 24px; }
+  .card.step .n { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: var(--teal-700); }
+  .card.step h4 { font-size: 16px; font-weight: 700; margin: 12px 0 10px; }
+  .card.step p { font-size: 14px; line-height: 1.625; color: var(--slate-600); }
+
+  .navdemo { border: 1px solid var(--slate-200); border-radius: var(--r-lg); background: rgb(255 255 255 / 0.9); }
+  .navdemo .row { height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 16px; }
+  .navdemo nav { display: none; gap: 32px; font-size: 14px; font-weight: 500; color: var(--slate-600); }
+  .navdemo nav a { text-decoration: none; }
+  .navdemo nav a:hover { color: var(--slate-900); }
+  @media (min-width: 900px) { .navdemo nav { display: flex; } }
+
+  .modal-stage { background: rgb(15 23 42 / 0.5); border-radius: var(--r-lg); padding: 40px 16px; display: grid; place-items: center; }
+  .modal { background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); box-shadow: var(--shadow-dialog); max-width: 448px; width: 100%; padding: 24px; position: relative; }
+  @media (min-width: 640px) { .modal { padding: 32px; } }
+  .modal .x { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; border-radius: var(--r-md); border: 0; background: transparent; color: var(--slate-400); display: grid; place-items: center; cursor: pointer; transition: background-color .15s var(--ease), color .15s var(--ease); }
+  .modal .x:hover { background: var(--slate-100); color: var(--slate-700); }
+  .modal .mtag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--teal-700); background: var(--teal-50); padding: 4px 10px; border-radius: var(--r-sm); margin-bottom: 12px; }
+  .modal h4 { font-size: 20px; font-weight: 700; padding-right: 40px; }
+  .modal .md { font-size: 14px; color: var(--slate-600); margin-top: 8px; line-height: 1.625; }
+  .modal form { margin-top: 20px; display: grid; gap: 16px; }
+  .modal .pair { display: grid; gap: 12px; }
+  @media (min-width: 640px) { .modal .pair { grid-template-columns: 1fr 1fr; } }
+  .modal .field { max-width: none; }
+  .modal .btn { width: 100%; padding: 12px; font-size: 14px; }
+  .success { margin-top: 20px; padding: 16px; border-radius: var(--r-lg); background: var(--teal-50); border: 1px solid var(--teal-100); text-align: center; }
+  .success b { color: var(--teal-700); font-size: 16px; }
+  .success p { font-size: 12px; color: var(--slate-600); margin-top: 8px; line-height: 1.625; }
+
+  /* ── Do / Don't ── */
+  .dd { display: grid; gap: 24px; }
+  @media (min-width: 768px) { .dd { grid-template-columns: 1fr 1fr; } }
+  .dd-col { background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); padding: 24px; }
+  @media (min-width: 640px) { .dd-col { padding: 32px; } }
+  .dd-col h3 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .dd-col h3 svg { width: 20px; height: 20px; flex: none; }
+  .dd-col ul { list-style: none; margin: 20px 0 0; padding: 20px 0 0; border-top: 1px solid var(--slate-100); display: grid; gap: 18px; }
+  .dd-col li { font-size: 14px; line-height: 1.625; color: var(--slate-600); display: flex; gap: 12px; }
+  .dd-col li b { color: var(--slate-900); }
+  .dot6.red { background: #dc2626; }
+  .ex { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ex-chip { font-size: 13px; font-weight: 500; padding: 6px 10px; border-radius: var(--r-md); border: 1px solid var(--slate-200); }
+
+  .gaps { display: grid; gap: 16px; }
+  @media (min-width: 1024px) { .gaps { grid-template-columns: repeat(3, 1fr); } }
+  .gap { background: var(--white); border: 1px solid var(--slate-200); border-radius: var(--r-xl); padding: 24px; }
+  .gap h3 { font-size: 14px; font-weight: 700; margin-top: 12px; }
+  .gap p { font-size: 14px; color: var(--slate-600); line-height: 1.625; margin-top: 6px; }
+
+  footer { background: var(--slate-50); border-top: 1px solid var(--slate-200); padding: 40px 0; font-size: 12px; color: var(--slate-500); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  footer b { color: var(--slate-800); font-weight: 600; }
+
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; background: var(--slate-900); color: var(--white); font-size: 13px; font-weight: 500; padding: 10px 16px; border-radius: var(--r-lg); box-shadow: var(--shadow-dialog); transition: opacity .2s var(--ease), transform .2s var(--ease); z-index: 60; }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap hdr-row">
+    <a href="#top" class="brand"><span class="brand-dot"></span><span class="brand-name">簡約風</span><span class="brand-sub">設計系統</span></a>
+    <span class="hdr-src">DESIGN.md</span>
+  </div>
+  <div class="toc">
+    <div class="wrap">
+      <ul>
+        <li><a href="#colors">色彩</a></li>
+        <li><a href="#type">字級</a></li>
+        <li><a href="#layout">版面</a></li>
+        <li><a href="#elevation">層次</a></li>
+        <li><a href="#shapes">形狀</a></li>
+        <li><a href="#components">元件</a></li>
+        <li><a href="#dos">Do's & Don'ts</a></li>
+        <li><a href="#gaps">待修正</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Overview -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="badge"><span class="dot6" style="margin:0"></span>Creative North Star ｜ The Quiet Instrument</span>
+        <h1 class="h1">簡約風</h1>
+        <p class="lead">像量測儀器的面板：灰階鋪底，細線分層，只在關鍵讀數上亮起一點深青。</p>
+        <p class="hero-desc">白與極淡石板灰交替的區段、石板灰文字、1px 細邊框的扁平卡片。按鈕平常是近黑，滑過才亮起青色。整頁沒有圖片，所有視覺都是文字、細線、圓點與線條圖示。</p>
+        <ul class="chars">
+          <li><span class="dot6"></span>白與 slate-50 交替的全寬區段，區段之間一條 slate-200 細線</li>
+          <li><span class="dot6"></span>單一深青強調色，只標示讀數與狀態，不鋪大面積</li>
+          <li><span class="dot6"></span>1px 細邊框的扁平白卡，圓角統一 16px</li>
+          <li><span class="dot6"></span>點陣網格只用在一處：本頁開頭的系統架構面板</li>
+        </ul>
+      </div>
+
+      <div class="arch" aria-label="系統架構面板（招牌元件）">
+        <div class="arch-top"><span>System Architecture</span><span class="live">● 即時雙無線架構</span></div>
+        <div class="node">
+          <div>
+            <span class="node-tag">前端暫態量測硬體</span>
+            <strong class="nt">可攜式無線電力偵測系統</strong>
+            <p>1000A 開扣式羅式線圈・免停電、免佈線</p>
+          </div>
+          <span class="ico"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></span>
+        </div>
+        <div class="link"><i></i><span>穿透式無線通訊 ＋ 內建 4G LTE 直連</span><i></i></div>
+        <div class="node">
+          <div>
+            <span class="node-tag grey">雲端驗證與維運平台</span>
+            <strong class="nt">雲端能源管理系統</strong>
+            <p>IPMVP 演算・綠基會 M&amp;V 範本・純台灣研發</p>
+          </div>
+          <span class="ico g"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></span>
+        </div>
+        <div class="metrics">
+          <div><b>0 分鐘</b><small>產線停電時間</small></div>
+          <div><b>1 分鐘/筆</b><small>高頻數據取樣</small></div>
+          <div><b class="g">100%</b><small>排除陸製軟體</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colors -->
+  <section id="colors" class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Colors</p>
+        <h2 class="h2">一個石板灰色階，加一個深青</h2>
+        <p class="desc">青色是信號，不是背景。點任一色塊可複製色碼；右上角是該色當文字放在白底上的對比。</p>
+      </div>
+
+      <h3 class="sub">深青 · Primary</h3>
+      <div class="swatches" data-group="teal"></div>
+
+      <h3 class="sub">石板灰 · Neutral</h3>
+      <div class="swatches" data-group="slate"></div>
+
+      <div class="rule">
+        <div>
+          <p class="rule-label">The Reading-Teal Rule</p>
+          <h3>會被讀的青字一律用 teal-700</h3>
+          <p>主色 #05556C 在白、slate-50、teal-50 上有 7.3–8.3:1。teal-600 是它的亮階，只給圓點、邊框與 focus 外框，不拿來寫字、也不當按鈕底。</p>
+        </div>
+        <div>
+          <p class="rule-label">The Signal-Not-Surface Rule</p>
+          <h3>深青不鋪超過一個標籤大小的面</h3>
+          <p>全頁最大的青色面積，就是滑過中的主要按鈕。區段底色只在白與 slate-50 之間切換。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section id="type">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Typography</p>
+        <h2 class="h2">Inter 搭 Noto Sans TC，層級靠字重與字色</h2>
+        <p class="desc">單一無襯線家族撐全頁。權重只用 400 / 500 / 600 / 700，不換字體。</p>
+      </div>
+
+      <div class="fonts">
+        <div class="font-card">
+          <div class="big">Aa 1000A</div>
+          <div class="wts"><span style="font-weight:400">Inter 400</span><span style="font-weight:500">500</span><span style="font-weight:600">600</span><span style="font-weight:700">700</span></div>
+        </div>
+        <div class="font-card">
+          <div class="big">節能量測</div>
+          <div class="wts"><span style="font-weight:400">思源黑體 400</span><span style="font-weight:500">500</span><span style="font-weight:600">600</span><span style="font-weight:700">700</span></div>
+        </div>
+      </div>
+
+      <div class="type-row"><div class="type-meta"><b>Display</b><span>700 · 30 → 36 → 42px<br>行高 1.2 · 字距 -0.025em</span></div><p class="t-display">節能工程量測與能管整合方案</p></div>
+      <div class="type-row"><div class="type-meta"><b>Headline</b><span>700 · 24 → 30px<br>字距 -0.025em</span></div><p class="t-headline">四步落地，加速 ESCO 專案變現</p></div>
+      <div class="type-row"><div class="type-meta"><b>Lead</b><span>500 · 18 → 20px · 1.625<br>teal-700，全頁唯一的青色大字</span></div><p class="t-lead">免停電無線量測搭配雲端能管，一套搞定 ESCO 全流程。</p></div>
+      <div class="type-row"><div class="type-meta"><b>Title</b><span>700 · 18px · 1.375<br>架構卡 20 → 24px、步驟卡 16px</span></div><p class="t-title">工廠無法配合停電掛表，配電盤內拉線又費時費工</p></div>
+      <div class="type-row"><div class="type-meta"><b>Body</b><span>400 · 16px · 1.625<br>slate-600 · 最寬 672px</span></div><p class="t-body">告別停電掛表與驗證文書作業。本方案整合可攜式無線電力偵測系統與雲端能源管理系統，讓 ESCO 團隊以最精實的軟硬體配置，快速完成 IPMVP 量測驗證。</p></div>
+      <div class="type-row"><div class="type-meta"><b>Body-sm</b><span>400 · 14px · 1.625<br>卡片內說明、導覽連結（500）</span></div><p class="t-sm">非侵入式開扣設計，適用各類大型動力與空調主迴路，免停電快速掛表。</p></div>
+      <div class="type-row"><div class="type-meta"><b>Label</b><span>600 · 12px · 字距 0.05em<br>英文大寫</span></div><p class="t-label">Pain Points &amp; Solutions</p></div>
+      <div class="type-row"><div class="type-meta"><b>Micro</b><span>500 · 11px<br>只出現在架構面板</span></div><p class="t-micro">產線停電時間 · 高頻數據取樣 · 排除陸製軟體</p></div>
+
+      <div class="rule">
+        <div>
+          <p class="rule-label">The Eyebrow Rule</p>
+          <h3>每個區段標題上方一行英文大寫眉標</h3>
+          <p>12px、600、字距 0.05em、teal-700，下方 8px 接中文標題。英文眉標配中文標題的雙語節奏是全頁的固定拍子。</p>
+        </div>
+        <div>
+          <p class="t-label">Dual-Core Architecture</p>
+          <p class="t-headline" style="margin-top:8px">產品雙核心技術亮點</p>
+          <p class="t-sm" style="margin-top:12px">移動式暫態診斷硬體與雲端能源管理軟體無縫串接。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layout -->
+  <section id="layout" class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Layout</p>
+        <h2 class="h2">1152px 容器、80 / 96px 區段、靠左的標題塊</h2>
+        <p class="desc">每個區段都是同一個節奏：眉標 → 標題 → 說明 → 卡片網格。只有底部 CTA 置中。</p>
+      </div>
+
+      <h3 class="sub">容器寬度</h3>
+      <div class="widths">
+        <div class="wbar g" style="width:100%"><b>1152px</b><span>主容器 max-w-6xl · 左右 20px，sm 起 32px</span></div>
+        <div class="wbar" style="width:88.9%"><b>1024px</b><span>底部 CTA 置中容器</span></div>
+        <div class="wbar" style="width:58.3%"><b>672px</b><span>區段標題塊、hero 說明</span></div>
+      </div>
+
+      <h3 class="sub">網格</h3>
+      <div class="grids">
+        <div class="gdemo"><h4>Hero · lg 起 7 / 5</h4><p>左文右架構面板，欄距 40px；以下單欄、間距 48px</p><div class="gcols" style="grid-template-columns:7fr 5fr"><i></i><i class="g"></i></div></div>
+        <div class="gdemo"><h4>痛點 · md 起 2 × 2</h4><p>間距 24px，sm 起 32px</p><div class="gcols" style="grid-template-columns:1fr 1fr"><i></i><i></i><i></i><i></i></div></div>
+        <div class="gdemo"><h4>雙核心 · lg 起 2 欄</h4><p>間距 32px</p><div class="gcols" style="grid-template-columns:1fr 1fr"><i style="height:104px"></i><i style="height:104px"></i></div></div>
+        <div class="gdemo"><h4>四步流程 · 1 → 2 → 4 欄</h4><p>sm 起 2 欄、lg 起 4 欄，間距 24px</p><div class="gcols" style="grid-template-columns:repeat(4,1fr)"><i></i><i></i><i></i><i></i></div></div>
+      </div>
+
+      <h3 class="sub">區段節奏</h3>
+      <div class="rhythm">
+        <div class="rh"><b>Hero</b><span>上 64 / 下 80px，sm 起 96 / 112px · 白底</span></div>
+        <div class="rh b"><b>痛點與解法</b><span>80px，sm 起 96px · slate-50 70%</span></div>
+        <div class="rh"><b>雙核心架構</b><span>80px，sm 起 96px · 白底</span></div>
+        <div class="rh b"><b>四步流程</b><span>80px，sm 起 96px · slate-50 70%</span></div>
+        <div class="rh"><b>底部 CTA</b><span>80px，sm 起 96px · 白底、置中</span></div>
+      </div>
+
+      <h3 class="sub">間距與斷點</h3>
+      <div class="scroll-x">
+        <table class="spec">
+          <thead><tr><th>Token</th><th>值</th><th>用在哪裡</th></tr></thead>
+          <tbody>
+            <tr><td>header-h</td><td>64px</td><td>sticky 導覽列高度</td></tr>
+            <tr><td>section-head-gap</td><td>48px → sm 64px</td><td>區段標題塊到內容</td></tr>
+            <tr><td>card-pad</td><td>24px → sm 32px</td><td>卡片內距（步驟卡固定 24px）</td></tr>
+            <tr><td>grid-gap</td><td>24px</td><td>卡片網格間距，痛點區 sm 起 32px</td></tr>
+            <tr><td>按鈕組</td><td>14px</td><td>手機直排撐滿寬，sm 起橫排</td></tr>
+            <tr><td>sm / md / lg</td><td>640 / 768 / 1024px</td><td>Tailwind 預設斷點；md 以下隱藏導覽連結</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Elevation -->
+  <section id="elevation">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Elevation &amp; Depth</p>
+        <h2 class="h2">幾乎全平，深度靠底色、細線與模糊</h2>
+        <p class="desc">內容卡片沒有陰影。三種陰影各有固定位置，不擴充。</p>
+      </div>
+      <div class="four">
+        <div class="elev flat"><div><h3>Flat · 內容卡片</h3><p>1px slate-200 邊框，hover 換 slate-300，不浮起、不位移。</p></div><code>box-shadow: none</code></div>
+        <div class="elev s1"><div><h3>Hairline lift</h3><p>架構面板節點卡、主要 CTA 按鈕。</p></div><code>0 1px 2px 0 rgb(0 0 0 / .05)</code></div>
+        <div class="elev s2"><div><h3>Hover lift</h3><p>主要 CTA 按鈕滑過時。</p></div><code>0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1)</code></div>
+        <div class="elev s3"><div><h3>Dialog</h3><p>modal 視窗，下方 slate-900 50% 遮罩。</p></div><code>0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1)</code></div>
+      </div>
+      <div class="rule">
+        <div>
+          <p class="rule-label">The Flat Card Rule</p>
+          <h3>卡片的 hover 只換邊框顏色</h3>
+          <p>把滑鼠移到右邊的卡片上：邊框從 slate-200 變成 slate-300，其他都不動。</p>
+        </div>
+        <div class="card pain" style="padding:24px"><div><span class="num-chip">痛點 01</span><h4 style="margin-bottom:0">滑過我看看邊框</h4></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shapes -->
+  <section id="shapes" class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Shapes</p>
+        <h2 class="h2">圓角跟著元件大小走，邊框一律 1px</h2>
+        <p class="desc">圓點是全頁的重複幾何：logo 前 10px 青點、清單前 6px 青點、狀態文字前的 ●、架構面板的點陣網格。</p>
+      </div>
+      <div class="radii">
+        <div class="rad"><i style="border-radius:4px"></i><div><b>xs · 4px</b><span>架構節點小標籤</span></div></div>
+        <div class="rad"><i style="border-radius:6px"></i><div><b>sm · 6px</b><span>數字小標、modal 標籤</span></div></div>
+        <div class="rad"><i style="border-radius:8px"></i><div><b>md · 8px</b><span>輸入框、導覽按鈕、圖示方塊</span></div></div>
+        <div class="rad"><i style="border-radius:12px"></i><div><b>lg · 12px</b><span>CTA 按鈕、架構節點</span></div></div>
+        <div class="rad"><i style="border-radius:16px"></i><div><b>xl · 16px</b><span>內容卡片、面板、modal</span></div></div>
+        <div class="rad"><i style="border-radius:9999px;height:48px;margin:24px 0"></i><div><b>full</b><span>徽章、技術標籤、圓點</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Components -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Components</p>
+        <h2 class="h2">冷靜、一按就亮</h2>
+        <p class="desc">以下元件都可以實際滑過、點擊、用 Tab 鍵走一遍。主色 #05556C（原 html 為翡翠綠）、按鈕 hover 的 teal-700、focus 外框、數字小標的 slate-600 是本系統對原始 html 的修正，各範例旁有標註。</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Buttons</h3><span>每組 CTA 一顆主要、一顆次要</span></div>
+        <div class="comp-body">
+          <div class="stage">
+            <div class="spec-item"><small>Primary</small><button class="btn btn-p" type="button">預約現場免停電實機展示</button></div>
+            <div class="spec-item"><small>Primary · hover（teal-700，白字 8.33:1）</small><button class="btn btn-p is-hover" type="button">預約實機展示</button></div>
+          </div>
+          <div class="stage" style="margin-top:28px">
+            <div class="spec-item"><small>Secondary</small><button class="btn btn-s" type="button">下載軟硬體規格與配置白皮書</button></div>
+            <div class="spec-item"><small>Secondary · hover</small><button class="btn btn-s is-hover" type="button">下載白皮書</button></div>
+            <div class="spec-item"><small>Compact · 導覽列</small><button class="btn btn-c" type="button">預約實機展示</button></div>
+          </div>
+          <div class="stage" style="margin-top:28px">
+            <div class="spec-item"><small>Primary · focus（2px teal-600，offset 2px）</small><button class="btn btn-p is-focus" type="button" tabindex="-1">送出申請</button></div>
+            <div class="spec-item"><small>Secondary · focus</small><button class="btn btn-s is-focus" type="button" tabindex="-1">下載白皮書</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Tags &amp; Chips</h3><span>青底只用在標籤，不擴大成面</span></div>
+        <div class="comp-body">
+          <div class="stage" style="align-items:center">
+            <div class="spec-item"><small>技術標籤 tag-pill</small><span class="tag-pill">硬體端 ｜ 跨案場重複周轉</span></div>
+            <div class="spec-item"><small>節點小標</small><span class="node-tag">前端暫態量測硬體</span></div>
+            <div class="spec-item"><small>Hero 徽章</small><span class="badge">ESCO 專案整合方案 ｜ 純台灣研發架構</span></div>
+            <div class="spec-item"><small>數字小標（slate-600，6.92:1；原 html 為 slate-400）</small><span class="num-chip">痛點 01</span></div>
+          </div>
+          <div class="spec-item" style="margin-top:28px"><small>Hero 合規標籤列</small>
+            <div class="hl-row"><span>✓ 1000A 開扣式羅式線圈免停電</span><span>✓ 穿透式無線通訊 ＋ 4G 直連</span><span>✓ 內建綠基會 M&amp;V 報告書範本</span><span>✓ 100% 排除中國大陸軟體</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Inputs</h3><span>標籤在上，原生 required 驗證</span></div>
+        <div class="comp-body">
+          <div class="fields">
+            <div class="field"><label for="i1">公司 / 單位名稱 *</label><input id="i1" type="text" placeholder="例如：○○機電工程有限公司" /><small class="muted" style="font-size:12px;margin-top:4px">Default · 點進去或按 Tab 看 focus</small></div>
+            <div class="field"><label for="i3">企業電子信箱 *</label><input id="i3" class="is-focus" type="email" value="name@company.com.tw" tabindex="-1" /><small class="muted" style="font-size:12px;margin-top:4px">Focus · 2px 青邊 + 4px teal-100 光暈</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Cards</h3><span>白底、1px 邊框、16px 圓角、無陰影</span></div>
+        <div class="comp-body" style="background:var(--band)">
+          <div class="cards2">
+            <article class="card pain">
+              <div><span class="num-chip">痛點 01</span><h4>工廠無法配合停電掛表，配電盤內拉線又費時費工</h4></div>
+              <div class="sol"><div class="sol-l">我們的解法</div><p>採用 1000A 開扣式羅式線圈，免停電、免佈線即可快速安裝；透過內建 4G LTE 直連雲端，無須借用業主廠區網路。</p></div>
+            </article>
+            <article class="card pillar">
+              <span class="tag-pill">軟體端 ｜ 純台灣研發合規</span>
+              <h4>雲端能源管理系統</h4>
+              <p class="sum">整合自動化採集、多案場雲端監管，全面排除中國大陸軟體。</p>
+              <ul class="feats">
+                <li><span class="dot6"></span><div><b>全自動數據採集</b><span>直接接收無線偵測箱 4G 數據。</span></div></li>
+                <li><span class="dot6"></span><div><b>合規 M&amp;V 驗證核心</b><span>內建 IPMVP 選項 A/B 演算法，精準核算節能率。</span></div></li>
+              </ul>
+            </article>
+          </div>
+          <div class="steps">
+            <div class="card step"><span class="n">STEP 01</span><h4>30 分鐘免停電快篩</h4><p>提著防護箱進場，羅式線圈一扣即測。</p></div>
+            <div class="card step"><span class="n">STEP 02</span><h4>快速建立基準線與送件</h4><p>4G 自動回傳數據，產出基準線報告。</p></div>
+            <div class="card step"><span class="n">STEP 03</span><h4>節能設備施工與系統整合</h4><p>汰換設備，佈建固定式電表與閘道器。</p></div>
+            <div class="card step"><span class="n">STEP 04</span><h4>自動驗收與雲端維運</h4><p>自動比對前後能耗，產出 M&amp;V 結案報告。</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Navigation</h3><span>64px sticky、白 90% + 背景模糊 12px</span></div>
+        <div class="comp-body" style="background:var(--band)">
+          <div class="navdemo">
+            <div class="row">
+              <span class="brand"><span class="brand-dot"></span><span class="brand-name">產品名稱</span><span class="brand-sub">量測與能管整合方案</span></span>
+              <nav aria-label="導覽示意"><a href="#colors">痛點與解法</a><a href="#components">軟硬體架構</a><a href="#layout">四步落地流程</a></nav>
+              <button class="btn btn-c" type="button">預約實機展示</button>
+            </div>
+          </div>
+          <p class="note" style="margin-top:16px">md（768px）以下隱藏中間的錨點連結，只留 logo 與一顆按鈕。</p>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Modal</h3><span>最大寬 448px、slate-900 50% 遮罩、Esc 與點遮罩可關閉</span></div>
+        <div class="comp-body">
+          <div class="cards2">
+            <div class="modal-stage">
+              <div class="modal" role="group" aria-label="Modal 示意：表單">
+                <button class="x" type="button" aria-label="關閉視窗"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <span class="mtag">現場 PoC 體驗預約</span>
+                <h4>預約現場免停電實機展示</h4>
+                <p class="md">技術顧問將攜帶可攜式無線電力偵測系統親赴案場，無須停電即可實測。</p>
+                <form onsubmit="return false">
+                  <div class="field"><label for="m1">公司 / 單位名稱 *</label><input id="m1" type="text" placeholder="例如：○○機電工程有限公司" /></div>
+                  <div class="pair">
+                    <div class="field"><label for="m2">聯絡人姓名 *</label><input id="m2" type="text" placeholder="王先生 / 林小姐" /></div>
+                    <div class="field"><label for="m3">聯絡電話 *</label><input id="m3" type="tel" placeholder="0912-345-678" /></div>
+                  </div>
+                  <button class="btn btn-p" type="submit">確認預約實機展示</button>
+                </form>
+              </div>
+            </div>
+            <div class="modal-stage">
+              <div class="modal" role="group" aria-label="Modal 示意：送出成功">
+                <span class="mtag">技術文件索取</span>
+                <h4>下載軟硬體規格與配置白皮書</h4>
+                <div class="success"><b>申請已收到</b><p>《軟硬體規格與配置白皮書》下載連結已寄送至您的企業電子信箱。</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Do's and Don'ts -->
+  <section id="dos" class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Do's and Don'ts</p>
+        <h2 class="h2">守住灰階，青色只留給讀數</h2>
+      </div>
+      <div class="dd">
+        <div class="dd-col">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal-700)" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Do</h3>
+          <ul>
+            <li><span class="dot6"></span><div><b>區段固定順序：</b>青色英文眉標 → 粗體中文標題 → 灰色說明 → 卡片網格。</div></li>
+            <li><span class="dot6"></span><div><b>區段底色交替：</b>白與 slate-50，區段底部一條 slate-200 細線。</div></li>
+            <li><span class="dot6"></span><div><b>青字一律 teal-700：</b>teal-600 只用在圓點與邊框。
+              <div class="ex"><span class="ex-chip" style="color:var(--teal-700)">teal-700 · 8.33:1</span></div></div></li>
+            <li><span class="dot6"></span><div><b>卡片：</b>白底、1px slate-200 邊框、16px 圓角、無陰影。</div></li>
+            <li><span class="dot6"></span><div><b>主要按鈕：</b>slate-900，hover 才轉青；每組 CTA 一主一次。</div></li>
+            <li><span class="dot6"></span><div><b>清單符號：</b>6px 青色圓點，不用勾勾圖示或編號圓圈。</div></li>
+          </ul>
+        </div>
+        <div class="dd-col">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Don't</h3>
+          <ul>
+            <li><span class="dot6 red"></span><div><b>slate-400 寫需要被讀的字：</b>白底只有 2.56:1；英文標題、副標一律用 slate-500。
+              <div class="ex"><span class="ex-chip" style="color:var(--slate-400)">原檔 System Architecture · 2.56:1</span></div></div></li>
+            <li><span class="dot6 red"></span><div><b>混用兩種青色當字色或按鈕底：</b>teal-600 只給圓點、邊框、focus 外框；文字與按鈕 hover 底一律 teal-700。</div></li>
+            <li><span class="dot6 red"></span><div><b>只靠 1px 邊框變色表示 focus：</b>或拿掉 outline 卻不補替代樣式。按鈕用 2px teal-600 外框，輸入框用 2px 青邊加光暈。</div></li>
+            <li><span class="dot6 red"></span><div><b>點陣網格鋪到其他區段：</b>它只屬於系統架構面板。</div></li>
+            <li><span class="dot6 red"></span><div><b>漸層、插圖、照片底圖：</b>這套系統的視覺全部由文字、細線與圓點構成。</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gaps -->
+  <section id="gaps">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Gaps</p>
+        <h2 class="h2">原始 html 裡沒有生效的 class</h2>
+        <p class="desc">原檔載入 Tailwind CDN v3，以下三處寫了但不會產生樣式。移植前要決定保留或補上。</p>
+      </div>
+      <div class="gaps">
+        <div class="gap"><code>border-brand-200</code><h3>成功訊息框的邊框</h3><p>config 只定義 brand 50 / 100 / 500 / 600 / 700 / 900，沒有 200，邊框退回 Tailwind 預設灰 #e5e7eb。本頁示範改用 teal-100。</p></div>
+        <div class="gap"><code>shadow-2xs</code><h3>架構連接線的膠囊</h3><p>v4 才有的 class，v3 不認得，膠囊實際上沒有陰影。本頁示範補上 Hairline lift。</p></div>
+        <div class="gap"><code>backdrop-blur-xs</code><h3>modal 遮罩的模糊</h3><p>同樣是 v4 class，v3 下遮罩只有 50% 墨色、沒有模糊。本頁照現況呈現，不加模糊。</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>Landing Page Style</b> · 簡約風</span>
+    <span>規格：DESIGN.md · 2026-11-26</span>
+  </div>
+</footer>
+
+<div class="toast" role="status" aria-live="polite" id="toast"></div>
+
+<script>
+(function () {
+  const COLORS = {
+    teal: [
+      ["teal-50", "#e6f2f4", "淡青底：技術標籤、軟體節點圖示底"],
+      ["teal-100", "#cce4e8", "文字選取底色"],
+      ["teal-600", "#00788c", "指示燈青：圓點、focus 邊框與外框"],
+      ["teal-700", "#05556c", "儀表青：所有青色文字、主要按鈕 hover 底"],
+      ["teal-900", "#033d4e", "文字選取字色"]
+    ],
+    slate: [
+      ["white", "#ffffff", "頁面底、卡片底"],
+      ["slate-50", "#f8fafc", "交替區段底（70%）、頁尾、次要按鈕 hover"],
+      ["slate-100", "#f1f5f9", "小標與圖示底、卡片內分隔線"],
+      ["slate-200", "#e2e8f0", "卡片邊框、區段分隔線"],
+      ["slate-300", "#cbd5e1", "可互動元件邊框、卡片 hover 邊框、點陣"],
+      ["slate-400", "#94a3b8", "只剩 modal 關閉鈕圖示，不用於文字"],
+      ["slate-500", "#64748b", "輔助說明、頁尾、架構面板英文標題、導覽副標"],
+      ["slate-600", "#475569", "內文、導覽連結、數字小標"],
+      ["slate-700", "#334155", "表單標籤、徽章文字"],
+      ["slate-800", "#1e293b", "次要按鈕文字"],
+      ["slate-900", "#0f172a", "標題、預設字色、主要按鈕底"]
+    ]
+  };
+
+  function lum(hex) {
+    const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255)
+      .map(v => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function ratio(a, b) {
+    const x = lum(a), y = lum(b);
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+  }
+
+  document.querySelectorAll(".swatches").forEach(box => {
+    COLORS[box.dataset.group].forEach(([name, hex, role]) => {
+      const r = ratio(hex, "#ffffff");
+      const onChip = lum(hex) > 0.4 ? "#0f172a" : "#ffffff";
+      let cls = "cr", txt = "白底 " + r.toFixed(2) + ":1";
+      if (r >= 4.5) cls += " pass";
+      else if (r >= 3) txt += " 大字";
+      else if (r > 1.6) cls += " fail";
+      else txt = "底色／線條";
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "sw";
+      b.setAttribute("aria-label", name + " " + hex + "，複製色碼");
+      b.innerHTML =
+        '<span class="sw-chip" style="background:' + hex + ';color:' + onChip + '">Aa</span>' +
+        '<span class="sw-body"><span class="sw-name">' + name + '</span>' +
+        '<span class="sw-hex"><span>' + hex + '</span><span class="' + cls + '">' + txt + '</span></span>' +
+        '<span class="sw-role">' + role + '</span></span>';
+      b.addEventListener("click", () => copy(hex));
+      box.appendChild(b);
+    });
+  });
+
+  const toast = document.getElementById("toast");
+  let t;
+  function show(msg) {
+    toast.textContent = msg;
+    toast.classList.add("on");
+    clearTimeout(t);
+    t = setTimeout(() => toast.classList.remove("on"), 1600);
+  }
+  function copy(hex) {
+    const done = () => show("已複製 " + hex);
+    try {
+      navigator.clipboard.writeText(hex).then(done, () => show(hex));
+    } catch (e) { show(hex); }
+  }
+
+  // 目錄：標示目前所在區段
+  const links = [...document.querySelectorAll(".toc a")];
+  const map = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(a => a.removeAttribute("aria-current"));
+        const a = map.get(e.target.id);
+        if (a) {
+          a.setAttribute("aria-current", "true");
+          a.scrollIntoView({ block: "nearest", inline: "nearest" });
+        }
+      }
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+})();
+</script>
+</body>
+</html>

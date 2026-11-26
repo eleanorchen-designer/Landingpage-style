@@ -1,0 +1,8 @@
+{
+  "name": "landingpage-style",
+  "version": "1.1.0",
+  "description": "三套頁面風格（手繪風、科技風格、簡約風）與手繪風用的 riso 網點插畫工具",
+  "author": { "name": "Landingpage Style" },
+  "repository": "https://github.com/eleanorchen-designer/Landingpage-style",
+  "keywords": ["design-system", "landing-page", "style"]
+}

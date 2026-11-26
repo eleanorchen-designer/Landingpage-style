@@ -1,0 +1,1322 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>科技風格</title>
+<meta name="description" content="科技風格（AI 風格）：帶青的深色虛空底、primary-color 圓點組成的馬賽克紋路、程式生成視覺，不使用插畫與漸層。內容對應 DESIGN-科技風格.md。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens（對應 DESIGN.md frontmatter） ── */
+:root{
+  --void-950:#030a0c; --void-900:#071215; --void-800:#0d1b1f; --void-700:#13252a; --code-950:#050d10;
+  --frost:#edf6f5;
+  --teal-900:#033d4e; --teal-700:#05556c; --teal-600:#00788c; --product-teal:#2aabb0;
+  --teal-400:#3ddbd0; --teal-300:#5ee6dc; --teal-200:#a3efe6; --teal-100:#dcf0f0;
+  --product-orange:#f28f3b; --orange-300:#ffb27a;
+
+  --bg-page:var(--void-950); --bg-surface:var(--void-900); --bg-raised:var(--void-800); --bg-overlay:var(--void-700); --bg-code:var(--code-950);
+  --bg-glass:rgba(7,18,21,.62); --bg-glass-fill:rgba(237,246,245,.04);
+  --text-primary:#edf6f5; --text-secondary:#abb4b4; --text-tertiary:#868e8e; --text-disabled:#616869; --text-inverse:#030a0c;
+  --text-link:var(--primary);
+  --line-subtle:rgba(237,246,245,.08); --line-default:rgba(237,246,245,.12); --line-strong:rgba(237,246,245,.20); --line-control:#7d8585;
+  --accent:var(--primary); --accent-strong:var(--teal-400); --focus-ring:var(--primary);
+  --overlay-hover:rgba(237,246,245,.06); --overlay-press:rgba(237,246,245,.10);
+
+  /* primary-color 與馬賽克：全部是純色圓點，不用任何漸層 */
+  --primary:#2aabb0; --text-highlight:var(--primary);
+  --mosaic-dim:rgba(42,171,176,.16); --mosaic-mid:rgba(42,171,176,.28); --mosaic-bright:rgba(42,171,176,.40); --mosaic-peak:rgba(42,171,176,.64);
+  --dots-dim:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1' fill='%232aabb0' fill-opacity='.16'/%3E%3C/svg%3E");
+  --dots-mid:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%232aabb0' fill-opacity='.28'/%3E%3C/svg%3E");
+  --dots-frost:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23edf6f5' fill-opacity='.35'/%3E%3C/svg%3E");
+  --dots-faint:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23edf6f5' fill-opacity='.10'/%3E%3C/svg%3E");
+  --rule-h:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='2'%3E%3Ccircle cx='1' cy='1' r='1' fill='%232aabb0' fill-opacity='.4'/%3E%3C/svg%3E");
+  --rule-v:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='6'%3E%3Ccircle cx='1' cy='1' r='1' fill='%232aabb0' fill-opacity='.4'/%3E%3C/svg%3E");
+  --scan-row:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Ccircle cx='4' cy='2' r='2' fill='%232aabb0' fill-opacity='.64'/%3E%3C/svg%3E");
+
+  --positive:#34d399; --negative:#f87171; --warning:#fbbf24; --info:#9cb8ff;
+  --viz-1:#3ddbd0; --viz-2:#f28f3b; --viz-3:#6f8cff; --viz-4:#f06fd0; --viz-5:#edf6f5; --viz-6:#fbe36b; --viz-other:#616869;
+
+  --font-sans:"Geist","Noto Sans TC",system-ui,sans-serif;
+  --font-mono:"Geist Mono","IBM Plex Mono",ui-monospace,monospace;
+  --fs-display:clamp(2.75rem,1.2727rem + 6.3030vw,6rem);
+  --fs-h1:clamp(2.25rem,1.4545rem + 3.3939vw,4rem);
+  --fs-h2:clamp(1.75rem,1.2955rem + 1.9394vw,2.75rem);
+  --fs-h3:clamp(1.375rem,1.2045rem + .7273vw,1.75rem);
+  --fs-h4:clamp(1.125rem,1.0682rem + .2424vw,1.25rem);
+  --fs-stat:clamp(2.5rem,1.3636rem + 4.8485vw,5rem);
+
+  --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-2xl:32px; --r-full:999px;
+
+  --el-hairline:inset 0 0 0 1px rgba(237,246,245,.08);
+  --el-glass:inset 0 1px 0 rgba(237,246,245,.08),inset 0 0 0 1px rgba(237,246,245,.08),0 24px 48px -24px rgba(0,0,0,.6);
+  --el-float:inset 0 1px 0 rgba(237,246,245,.06),0 32px 64px -16px rgba(0,0,0,.7);
+  --el-ring-sm:0 0 0 1px rgba(42,171,176,.6);
+  --el-ring-md:0 0 0 1px #2aabb0,0 0 0 4px rgba(42,171,176,.16);
+  --el-device:0 0 0 1px rgba(237,246,245,.10),0 40px 80px -20px rgba(0,0,0,.8);
+
+  --ease-out:cubic-bezier(.16,1,.3,1); --ease-in-out:cubic-bezier(.65,0,.35,1);
+  color-scheme:dark;
+}
+
+/* ── Base ── */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:88px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg-page);color:var(--text-primary);font-family:var(--font-sans);font-size:1rem;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--text-link);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+h1,h2,h3,h4{font-weight:500;margin:0}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+@media (max-width:767px){.wrap{padding:0 16px}}
+.mono{font-family:var(--font-mono);font-feature-settings:"tnum" 1,"zero" 1}
+.muted{color:var(--text-secondary)}
+.faint{color:var(--text-tertiary)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hl{color:var(--text-highlight)}
+@media (forced-colors:active){.hl{color:CanvasText}}
+.sparkle{width:1em;height:1em;flex:none}
+
+/* ── Nav ── */
+.nav{position:sticky;top:0;z-index:50;height:64px;background:var(--bg-glass);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid var(--line-subtle)}
+.nav::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--rule-h);opacity:0;transition:opacity 240ms var(--ease-out)}
+.nav.scrolled::after{opacity:1}
+.nav .wrap{height:100%;display:flex;align-items:center;gap:24px}
+.logo{font-weight:500;letter-spacing:-.02em;color:var(--text-primary);text-decoration:none;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.logo small{font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary);letter-spacing:.12em}
+.nav-links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:.875rem;padding:6px 12px;border-radius:var(--r-full);white-space:nowrap;transition:color 160ms var(--ease-out),background 160ms var(--ease-out)}
+.nav-links a:hover{color:var(--text-primary);background:var(--overlay-hover)}
+.motion-toggle{font-family:var(--font-mono);font-size:.75rem;letter-spacing:0;color:var(--text-secondary);background:var(--bg-glass-fill);border:1px solid var(--line-default);border-radius:var(--r-full);height:32px;padding:0 12px;cursor:pointer;white-space:nowrap;position:relative}
+.motion-toggle::before{content:"";position:absolute;inset:-6px}
+.motion-toggle:hover{color:var(--text-primary)}
+
+/* ── Fields ── */
+.field{position:relative;isolation:isolate;overflow:hidden}
+canvas.mosaic{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.paused .trail-run,.paused .pulse::after,.paused .flow path.dash,.paused .orb-ring,.paused .caret{animation-play-state:paused!important}
+
+/* ── Sections ── */
+section{padding:128px 0;position:relative}
+@media (max-width:767px){section{padding:64px 0}}
+.sec-head{margin-bottom:48px;max-width:46rem}
+@media (max-width:767px){.sec-head{margin-bottom:32px}}
+.eyebrow{font-family:var(--font-mono);font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-tertiary);display:inline-flex;gap:10px;align-items:center;margin-bottom:16px}
+.eyebrow b{color:var(--accent);font-weight:500}
+h2.h2{font-size:var(--fs-h2);line-height:1.25}
+.sec-head p{margin-top:16px;color:var(--text-secondary);font-size:clamp(1.125rem,1.0682rem + .2424vw,1.25rem);line-height:1.7;max-width:34em}
+.divider{height:2px;background:var(--rule-h);border:0;margin:0 auto;max-width:1152px}
+:lang(en) h2.h2{line-height:1.1;letter-spacing:-.025em}
+
+/* ── Hero ── */
+.hero{padding:120px 0 96px;text-align:center}
+.hero .wrap{display:flex;flex-direction:column;align-items:center}
+.hero h1{font-size:var(--fs-display);line-height:1.15;margin:24px 0 0;max-width:14em}
+.hero .lead{margin-top:24px;color:var(--text-secondary);font-size:clamp(1.125rem,1.0682rem + .2424vw,1.25rem);line-height:1.7;max-width:34em}
+.hero .actions{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap;justify-content:center}
+.hero .meta{margin-top:56px;display:flex;gap:24px;flex-wrap:wrap;justify-content:center;font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary);letter-spacing:.02em}
+
+/* ── Badge ── */
+.badge-ai{position:relative;display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:var(--r-full);background:var(--bg-glass-fill);border:1px solid var(--primary);font-family:var(--font-mono);font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-primary)}
+.badge-ai .sparkle{width:12px;height:12px}
+
+/* ── Buttons ── */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 22px;border-radius:var(--r-full);font:500 .9375rem/1 var(--font-sans);text-decoration:none;border:0;cursor:pointer;white-space:nowrap;transition:transform 80ms var(--ease-out);isolation:isolate}
+.btn:active{transform:scale(.97)}
+.btn::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity 240ms var(--ease-out)}
+.btn-primary{background:var(--frost);color:var(--text-inverse)}
+.btn-primary::after{box-shadow:var(--el-ring-md)}
+.btn-primary:hover::after{opacity:1}
+.btn-signal{background:var(--primary);color:var(--text-inverse);box-shadow:var(--el-ring-md);padding:0 24px}
+.btn-signal::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--dots-frost);clip-path:inset(0 100% 0 0 round 999px)}
+.btn-signal:hover::before{clip-path:inset(0 0 0 0 round 999px);transition:clip-path 600ms steps(8)}
+.btn-signal .sparkle{width:16px;height:16px}
+.btn-glass{background:var(--bg-glass-fill);color:var(--text-primary);border:1px solid var(--line-default);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.btn-glass::after{background:var(--overlay-hover)}
+.btn-glass:hover::after{opacity:1}
+.btn-ghost{background:none;color:var(--text-secondary);padding:0 4px}
+.btn-ghost:hover{color:var(--text-primary)}
+.btn-ghost .arr{transition:transform 160ms var(--ease-out)}
+.btn-ghost:hover .arr{transform:translateX(2px)}
+.btn-md{height:40px;padding:0 18px}
+.btn-sm{height:32px;padding:0 14px;font-size:.8125rem}
+.btn-sm::before{content:"";position:absolute;inset:-6px}
+.btn[disabled]{background:var(--bg-raised);color:var(--text-disabled);box-shadow:none;cursor:not-allowed}
+.btn[disabled]::after{display:none}
+@media (hover:none){.btn-primary:hover::after,.btn-glass:hover::after{opacity:0}}
+
+/* ── Cards ── */
+.glass{position:relative;background:var(--bg-glass-fill);border-radius:var(--r-xl);box-shadow:var(--el-glass);padding:32px}
+.glass h3{font-size:var(--fs-h3);line-height:1.35;margin-top:12px}
+.glass p{margin-top:8px;font-size:.875rem;line-height:1.65;color:var(--text-secondary)}
+.beam{position:relative;box-shadow:inset 0 1px 0 rgba(237,246,245,.08),0 24px 48px -24px rgba(0,0,0,.6)}
+.beam>svg.trail{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.trail rect{fill:none;stroke-width:2}
+.trail .trail-base{stroke:var(--mosaic-mid);stroke-dasharray:0 6}
+.trail rect{stroke-linecap:round}
+.trail .trail-run{stroke:var(--primary);animation:trail 6s steps(var(--n,200)) infinite}
+@keyframes trail{to{stroke-dashoffset:calc(var(--len,1200px) * -1)}}
+.spot{--mx:-999px;--my:-999px;overflow:hidden}
+.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--dots-mid);clip-path:circle(120px at var(--mx) var(--my));opacity:0;transition:opacity 240ms var(--ease-out);pointer-events:none;z-index:0}
+.spot::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:var(--el-ring-sm);opacity:0;transition:opacity 240ms var(--ease-out);pointer-events:none}
+.spot>*{position:relative;z-index:1}
+@media (hover:hover){.spot:hover::before,.spot:hover::after{opacity:1}}
+
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.c7{grid-column:span 7}.c5{grid-column:span 5}.c4{grid-column:span 4}.c3{grid-column:span 3}.c6{grid-column:span 6}.c12{grid-column:span 12}.c8{grid-column:span 8}
+@media (max-width:1023px){.c7,.c5,.c4,.c3,.c6,.c8{grid-column:span 6}}
+@media (max-width:767px){.bento{grid-template-columns:1fr}.c7,.c5,.c4,.c3,.c6,.c12,.c8{grid-column:auto}}
+
+/* ── Tables ── */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r-lg);box-shadow:var(--el-hairline);background:var(--bg-surface)}
+table{border-collapse:collapse;width:100%;font-size:.875rem;line-height:1.6}
+th{font-family:var(--font-mono);font-size:.75rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--text-tertiary);text-align:left;padding:14px 16px;border-bottom:1px solid var(--line-strong);white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--line-subtle);color:var(--text-secondary);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--text-primary)}
+td code,p code,li code{font-family:var(--font-mono);font-size:.8125rem;color:var(--teal-300);background:rgba(94,230,220,.07);padding:1px 6px;border-radius:var(--r-xs)}
+.num{font-family:var(--font-mono);font-feature-settings:"tnum" 1;white-space:nowrap}
+
+/* ── Swatches ── */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.sw{border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--el-hairline);background:var(--bg-surface)}
+.sw .chip-c{height:88px;display:flex;align-items:flex-end;padding:10px 12px;font-family:var(--font-mono);font-size:.75rem}
+.sw .info{padding:10px 12px 12px;font-size:.8125rem;line-height:1.5}
+.sw .info b{display:block;font-weight:500;color:var(--text-primary)}
+.sw .info span{font-family:var(--font-mono);color:var(--text-tertiary);font-size:.75rem}
+.chip-c.lv[data-lv="2"]{background:#030a0c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.5' fill='%232aabb0' fill-opacity='.28'/%3E%3C/svg%3E")}
+.chip-c.lv[data-lv="3"]{background:#030a0c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.5' fill='%232aabb0' fill-opacity='.40'/%3E%3C/svg%3E")}
+.chip-c.lv[data-lv="4"]{background:#030a0c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='2.25' fill='%232aabb0' fill-opacity='.64'/%3E%3C/svg%3E")}
+.grad-list{display:grid;gap:20px}
+.grad-list .lbl{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.875rem}
+
+/* ── Typography specimen ── */
+.type-row{display:grid;grid-template-columns:140px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid var(--line-subtle);align-items:baseline}
+.type-row:last-child{border-bottom:0}
+@media (max-width:767px){.type-row{grid-template-columns:1fr;gap:8px}}
+.type-row .tag{font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary);line-height:1.5}
+.type-row .tag b{display:block;color:var(--accent);font-weight:500}
+
+/* ── Prompt bar ── */
+.prompt{position:relative;display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 12px 12px 20px;border-radius:var(--r-xl);background:var(--bg-glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-default);width:100%;max-width:640px;text-align:left}
+.prompt.focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(42,171,176,.16)}
+.prompt .sparkle{width:20px;height:20px}
+.prompt .q{flex:1;color:var(--text-secondary);font-size:1rem;min-width:0}
+.caret{display:inline-block;width:2px;height:1.1em;background:var(--accent);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.send{width:40px;height:40px;border-radius:50%;background:var(--frost);color:var(--text-inverse);display:grid;place-items:center;flex:none}
+.suggest{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.chip{display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:var(--r-full);background:var(--bg-glass-fill);border:1px solid var(--line-subtle);color:var(--text-secondary);font-size:.8125rem;white-space:nowrap}
+.chip.sel{border-color:var(--accent);color:var(--text-primary)}
+a.chip{text-decoration:none}
+a.chip:hover{background:var(--overlay-hover);color:var(--text-primary)}
+.demo-tag{font-family:var(--font-mono);font-size:.75rem;letter-spacing:0;color:var(--orange-300);border:1px solid rgba(255,178,122,.35);border-radius:var(--r-full);padding:2px 8px;white-space:nowrap}
+
+/* ── Console ── */
+.console{background:var(--bg-code);border-radius:var(--r-md);border:1px solid var(--line-subtle);overflow:hidden}
+.console .bar{height:40px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid var(--line-subtle);font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary)}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:rgba(237,246,245,.2)}
+.console .bar .file{flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.console pre{margin:0;padding:20px 24px;font-family:var(--font-mono);font-size:.875rem;line-height:1.7;color:var(--text-secondary);white-space:pre-wrap;overflow-x:auto}
+.console .ln{display:block}
+.console .p{color:var(--accent)}
+.k{color:var(--teal-300)}.s{color:var(--teal-100)}.n{color:var(--orange-300)}.c{color:var(--text-tertiary)}
+.ok{color:var(--positive)}
+
+/* ── Status dot ── */
+.status{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.04em;color:var(--text-secondary)}
+.pulse{position:relative;width:8px;height:8px;border-radius:50%;background:var(--accent-strong);flex:none}
+.pulse::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--accent-strong);animation:pulse 2s var(--ease-out) infinite}
+@keyframes pulse{from{transform:scale(1);opacity:.6}to{transform:scale(2.4);opacity:0}}
+
+/* ── Response card ── */
+.resp-head{display:flex;align-items:center;gap:10px}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--primary);display:grid;place-items:center;color:var(--text-inverse);flex:none}
+.avatar svg{width:14px;height:14px}
+.resp-body{margin-top:16px;color:var(--text-secondary);line-height:1.75}
+.resp-body strong{color:var(--text-primary);font-weight:500}
+.sources{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.q-bubble{margin-left:auto;max-width:80%;background:var(--bg-raised);border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg);padding:12px 16px;color:var(--text-primary);font-size:.9375rem;width:fit-content}
+
+/* ── Stat row ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.stat{padding:8px 24px;position:relative}
+.stat+.stat::before{content:"";position:absolute;left:0;top:10%;bottom:10%;width:2px;background:var(--rule-v)}
+.stat .v{font-size:var(--fs-stat);line-height:1;letter-spacing:-.04em;font-weight:500;font-feature-settings:"tnum" 1}
+.stat .u{font-size:var(--fs-h3);letter-spacing:0}
+.stat .cap{margin-top:12px;font-family:var(--font-mono);font-size:.8125rem;color:var(--text-tertiary);line-height:1.5}
+@media (max-width:767px){.stats{grid-template-columns:1fr 1fr;row-gap:32px}.stat:nth-child(3)::before{display:none}}
+
+/* ── Metric tile ── */
+.metric{padding:20px}
+.metric .val{font-size:var(--fs-h2);line-height:1.1;margin-top:8px}
+.metric .val .mono{font-size:.875rem;color:var(--text-tertiary);margin-left:6px}
+.metric svg{display:block;width:100%;height:64px;margin-top:12px}
+
+/* ── Device frame ── */
+.device-stage{position:relative;padding:48px 0;isolation:isolate}
+.device-stage>canvas.mosaic{inset:0 -24px;width:calc(100% + 48px)}
+.device{position:relative;border-radius:var(--r-xl);background:var(--bg-surface);border:1px solid var(--line-default);box-shadow:var(--el-device);overflow:hidden}
+.device .bar{height:40px;background:var(--bg-raised);display:flex;align-items:center;gap:16px;padding:0 16px}
+.url{flex:1;max-width:360px;margin:0 auto;height:24px;border-radius:var(--r-full);background:var(--bg-surface);font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary);display:grid;place-items:center}
+.screen{position:relative;aspect-ratio:16/10;display:grid;place-items:center;background-image:var(--dots-dim);overflow:hidden}
+.screen .ph{text-align:center;padding:24px;max-width:28em}
+.screen .ph b{display:block;font-weight:500;font-size:var(--fs-h4);color:var(--text-primary)}
+.screen .ph span{display:block;margin-top:8px;font-size:.875rem;color:var(--text-tertiary)}
+.scan{position:absolute;left:0;right:0;top:0;height:4px;background:var(--scan-row);transform:translateY(-10px);opacity:0}
+.scanned .scan{animation:scan 1200ms steps(var(--steps,60)) forwards}
+@keyframes scan{0%{transform:translateY(0);opacity:1}90%{opacity:1}100%{transform:translateY(var(--h,600px));opacity:0}}
+
+/* ── Generative visuals ── */
+.vis{height:280px;border-radius:var(--r-lg);overflow:hidden;position:relative;background:var(--bg-surface);box-shadow:var(--el-hairline)}
+.vis canvas,.vis svg.full{position:absolute;inset:0;width:100%;height:100%}
+.vis .cap{position:absolute;left:12px;bottom:10px;padding:2px 6px;border-radius:var(--r-xs);background:rgba(3,10,12,.72);font-family:var(--font-mono);font-size:.75rem;letter-spacing:.02em;color:var(--text-tertiary)}
+.vis canvas.mosaic{z-index:0}
+.flow path.base{stroke:var(--line-strong);stroke-width:1;fill:none}
+.flow path.dash{stroke:var(--primary);stroke-width:2;fill:none;stroke-dasharray:0 8;stroke-linecap:round;animation:flow 2.4s steps(20) infinite}
+@keyframes flow{to{stroke-dashoffset:-160}}
+.flow .node{fill:var(--bg-surface);stroke:var(--primary);stroke-width:1.5}
+.flow .core{fill:var(--primary)}
+.flow text{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;fill:var(--text-secondary)}
+.orb-wrap{position:absolute;inset:0;display:grid;place-items:center}
+.vis canvas.orb{position:static;inset:auto;width:176px;height:176px;display:block}
+.orb-ring{position:absolute;width:216px;height:216px;border-radius:50%;border:2px dotted rgba(42,171,176,.4);animation:spin 40s steps(120) infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Charts ── */
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.8125rem;color:var(--text-secondary);margin-top:16px}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:1px}
+.chart svg{width:100%;height:auto;display:block}
+
+/* ── Motion / misc ── */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity 600ms var(--ease-out),transform 600ms var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+.blur-in .w{display:inline-block;opacity:0;filter:blur(8px);transform:translateY(12px);transition:opacity 800ms var(--ease-out),filter 800ms var(--ease-out),transform 800ms var(--ease-out)}
+.blur-in.in .w{opacity:1;filter:none;transform:none}
+.stream .t{opacity:0;transition:opacity 120ms linear}
+.stream .t.on{opacity:1}
+.shimmer{color:var(--text-secondary)}
+.shimmer::after{content:"•••";font-family:var(--font-mono);color:var(--primary);display:inline-block;overflow:hidden;vertical-align:bottom;white-space:nowrap;width:3ch;margin-left:4px;animation:ld 1.2s steps(4,end) infinite}
+@keyframes ld{from{width:0}to{width:4ch}}
+.skeleton{height:12px;border-radius:var(--r-xs);background:var(--bg-raised);position:relative;overflow:hidden;margin-top:10px}
+.skeleton::after{content:"";position:absolute;top:0;bottom:0;left:0;width:30%;background:var(--dots-faint);transform:translateX(-100%);animation:sk 1.6s steps(10) infinite}
+@keyframes sk{to{transform:translateX(340%)}}
+.notice{display:flex;gap:10px;align-items:flex-start;padding:12px 16px;border-radius:var(--r-md);font-size:.875rem;line-height:1.6}
+.notice.pos{background:rgba(52,211,153,.12);color:var(--text-primary)}
+.notice.neg{background:rgba(248,113,113,.12);color:var(--text-primary)}
+.notice svg{flex:none;margin-top:3px}
+.field-demo label{display:block;font-size:.875rem;font-weight:500;margin-bottom:8px}
+.input{width:100%;height:48px;border-radius:var(--r-md);background:var(--bg-surface);border:1px solid var(--line-control);color:var(--text-primary);padding:0 16px;font:inherit;font-size:1rem}
+.input::placeholder{color:var(--text-tertiary)}
+.input:focus{outline:none;border-color:var(--accent);box-shadow:var(--el-ring-sm)}
+.input.err{border-color:var(--negative)}
+.err-msg{color:var(--negative);font-size:.8125rem;margin-top:6px}
+.list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.list li{position:relative;padding-left:24px;color:var(--text-secondary);line-height:1.7}
+.list li::before{content:"";position:absolute;left:4px;top:.72em;width:6px;height:6px;border-radius:50%;background:var(--accent-strong)}
+.list.dont li::before{background:var(--negative);border-radius:1px;transform:rotate(45deg)}
+.list li strong{color:var(--text-primary);font-weight:500}
+.principles{counter-reset:p;display:grid;gap:16px}
+.principles .glass{padding:24px 28px;display:grid;grid-template-columns:56px 1fr;gap:16px}
+.principles .idx{font-family:var(--font-mono);font-size:.875rem;color:var(--accent)}
+.principles h3{margin:0;font-size:var(--fs-h4);line-height:1.4}
+.principles p{margin-top:6px}
+@media (max-width:767px){.principles .glass{grid-template-columns:1fr;gap:4px}}
+.faq-row{border-bottom:1px solid var(--line-default)}
+.faq-row button{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:48px 1fr 24px;gap:12px;align-items:center;padding:24px 0;cursor:pointer;font-size:var(--fs-h4);line-height:1.4}
+.faq-row button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.faq-row .no{font-family:var(--font-mono);font-size:.8125rem;color:var(--text-tertiary)}
+.faq-row .plus{transition:transform 160ms var(--ease-out);color:var(--text-secondary)}
+.faq-row[data-open] .plus{transform:rotate(45deg)}
+.faq-row .ans{padding:0 36px 24px 60px;color:var(--text-secondary)}
+@media (max-width:767px){.faq-row .ans{padding:0 0 24px}}
+.decisions{counter-reset:d;display:grid;gap:12px;padding:0;margin:0;list-style:none}
+.decisions li{counter-increment:d;display:grid;grid-template-columns:48px 1fr;gap:12px;padding:20px 24px;border-radius:var(--r-lg);background:var(--bg-glass-fill);box-shadow:var(--el-glass);color:var(--text-secondary)}
+.decisions li::before{content:counter(d,decimal-leading-zero);font-family:var(--font-mono);color:var(--accent)}
+.decisions li strong{color:var(--text-primary);font-weight:500}
+footer{padding:48px 0 64px;border-top:1px solid var(--line-subtle);font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary);letter-spacing:.02em}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.stack{display:grid;gap:16px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.spec-note{margin-top:12px;font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary);line-height:1.6}
+
+/* ── Reduced motion / transparency / contrast ── */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:0s!important}
+  .reveal,.blur-in .w,.stream .t{opacity:1!important;transform:none!important;filter:none!important}
+  .shimmer::after{width:3ch}
+}
+.no-motion *,.no-motion *::before,.no-motion *::after{animation:none!important}
+.no-motion .reveal,.no-motion .blur-in .w,.no-motion .stream .t{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+@media (prefers-reduced-transparency:reduce){
+  .nav,.prompt,.btn-glass{background:var(--bg-surface);backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+@media (prefers-contrast:more){canvas.mosaic{display:none}.faint,.eyebrow{color:var(--text-secondary)}}
+@media (forced-colors:active){canvas.mosaic{display:none}.glass,.btn,.device,.prompt,.console{border:1px solid CanvasText}}
+</style>
+</head>
+<body>
+<!-- 共用圖形 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="pDots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1" fill="#2aabb0" fill-opacity=".4"/></pattern>
+    <pattern id="pDotsViz" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1" fill="#3ddbd0" fill-opacity=".26"/></pattern>
+    <symbol id="sparkle" viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">Landing Page Style <small>科技風格</small></a>
+    <nav class="nav-links" aria-label="章節">
+      <a href="#content">內容規則</a><a href="#color">色彩</a><a href="#fields">馬賽克</a><a href="#type">字體</a><a href="#components">元件</a><a href="#visuals">生成式視覺</a><a href="#motion">動態</a><a href="#dataviz">資料視覺</a><a href="#a11y">無障礙</a><a href="#diff">差異</a>
+    </nav>
+    <button class="motion-toggle" id="motionToggle" type="button" aria-pressed="false">動態：開</button>
+  </div>
+</header>
+
+<main id="top">
+<!-- ═══ Hero ═══ -->
+<section class="hero field" aria-labelledby="hero-title">
+  <canvas class="mosaic" data-mosaic="field" data-cap="4" data-seed="7" data-drift data-quiet=".badge-ai,h1,.lead,.actions,.meta" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <span class="badge-ai"><svg class="sparkle" fill="#2aabb0" aria-hidden="true"><use href="#sparkle"/></svg>Landing Page Style</span>
+    <h1 id="hero-title" class="blur-in" data-split>能源數據，<span class="hl">正在被運算的訊號</span></h1>
+    <p class="lead reveal">科技風格（原 Neural Signal）是一套 AI 風格：深色虛空底、primary-color #2aabb0 圓點組成的馬賽克紋路、玻璃卡片、逐字串流的文字。所有視覺由程式生成，不使用插畫，也不使用漸層。</p>
+    <div class="actions reveal">
+      <a class="btn btn-primary" href="#components">看元件</a>
+      <a class="btn btn-glass" href="#diff">與手繪風的差異</a>
+    </div>
+    <div class="meta reveal"><span>DRAFT · 2026-11-26</span><span>SOURCE · DESIGN.md</span><span>PARENT · 手繪風</span></div>
+  </div>
+</section>
+
+<!-- ═══ Overview ═══ -->
+<section id="overview" aria-labelledby="ov-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 00 ]</b> OVERVIEW</span>
+      <h2 class="h2" id="ov-t">五條原則</h2>
+      <p>與 手繪風 共用骨架（間距、12 欄、流動字級、中文行高、不編造內容），換掉皮膚（底色、紋路、字體、動態、視覺素材）。2026-11-26 起不使用任何漸層。</p>
+    </div>
+    <div class="principles">
+      <div class="glass reveal"><span class="idx">01</span><div><h3>黑底，點陣就是層次。</h3><p>頁面是 <code>void-950</code>。卡片靠內緣 1px 的線浮起；區段的氣氛靠背後的馬賽克，不靠陰影或光暈。</p></div></div>
+      <div class="glass reveal"><span class="idx">02</span><div><h3>只用 primary-color。</h3><p>馬賽克、強調字、主按鈕、外環全部是 <code>primary</code> #2aabb0 的純色或固定透明度，不做色彩過渡。不加紫、藍、洋紅。</p></div></div>
+      <div class="glass reveal"><span class="idx">03</span><div><h3>畫面都由程式生成，不用插畫、不用漸層。</h3><p>馬賽克、節點網路、波形、資料流、點陣球全部用 CSS／SVG／Canvas 產生。不畫等角插圖、不用插畫 skill、不放 AI 生成圖片。</p></div></div>
+      <div class="glass reveal"><span class="idx">04</span><div><h3>文字像在被運算。</h3><p>等寬字小標 <span class="mono">[ 01 ] SIGNAL</span>、primary 強調詞、逐字串流的說明、先亂碼再解碼的數字。</p></div></div>
+      <div class="glass reveal"><span class="idx">05</span><div><h3>長得像 AI，不等於說自己是 AI。</h3><p>視覺語彙可以很重，宣稱必須是真的。沒有 AI 功能的產品不寫「AI 驅動」。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══ Content rules ═══ -->
+<section id="content" aria-labelledby="cr-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 01 ]</b> CONTENT RULES</span>
+      <h2 class="h2" id="cr-t">內容規則先於視覺規則</h2>
+    </div>
+    <div class="bento">
+      <div class="glass c6 reveal">
+        <ul class="list">
+          <li><strong>不宣稱沒有的能力。</strong>「AI」「智能預測」「自動優化」只用在品牌方確認存在的功能上。</li>
+          <li><strong>Prompt bar 只有兩種合法用法：</strong>背後真的有功能；或標明「示意」的靜態展示，內容是核可文案。</li>
+          <li><strong>Console 與回答卡的數值</strong>只放規格書上的值、量測項目與單位、或狀態文字；範例標「示意」且不帶讀數。</li>
+        </ul>
+      </div>
+      <div class="glass c6 reveal">
+        <ul class="list">
+          <li><strong>來源 chip 必須連到真的頁面或文件。</strong></li>
+          <li><strong>串流文字只是進場方式。</strong>內容是固定文案，不暗示即時生成。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Color ═══ -->
+<section id="color" class="field" aria-labelledby="col-t">
+  <canvas class="mosaic" data-mosaic="field" data-cap="2" data-seed="3" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 02 ]</b> COLOR</span>
+      <h2 class="h2" id="col-t">虛空、前景與 primary-color</h2>
+      <p>虛空底與前景都往青綠偏一點，與原始品牌的深色區段同色相。前景是 <code>frost</code> #edf6f5，不用純白。中性色是 frost 混黑的百分比。</p>
+    </div>
+
+    <h3 class="eyebrow" style="margin-top:0">虛空（帶青）</h3>
+    <div class="swatches reveal">
+      <div class="sw"><div class="chip-c" style="background:#030a0c;box-shadow:inset 0 0 0 1px rgba(237,246,245,.08)">18.15</div><div class="info"><b>bg-page</b><span>#030a0c</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#071215">17.26</div><div class="info"><b>bg-surface</b><span>#071215</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#0d1b1f">16.00</div><div class="info"><b>bg-raised</b><span>#0d1b1f</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#13252a">14.41</div><div class="info"><b>bg-overlay</b><span>#13252a</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#050d10">—</div><div class="info"><b>bg-code</b><span>#050d10</span></div></div>
+    </div>
+    <p class="spec-note">色塊上的數字 = text-primary 在該底色上的對比。</p>
+
+    <h3 class="eyebrow" style="margin-top:48px">透明度系統（frost 混黑）</h3>
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead><tr><th>Token</th><th>比例</th><th>解析值</th><th>bg</th><th>surface</th><th>raised</th><th>overlay</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td><code>text-primary</code></td><td class="num">100%</td><td class="num"><span style="color:#edf6f5">■</span> #edf6f5</td><td class="num">18.15</td><td class="num">17.26</td><td class="num">16.00</td><td class="num">14.41</td><td>標題、內文</td></tr>
+          <tr><td><code>text-secondary</code></td><td class="num">72%</td><td class="num"><span style="color:#abb4b4">■</span> #abb4b4</td><td class="num">9.42</td><td class="num">8.97</td><td class="num">8.31</td><td class="num">7.48</td><td>說明文字</td></tr>
+          <tr><td><code>text-tertiary</code></td><td class="num">56%</td><td class="num"><span style="color:#868e8e">■</span> #868e8e</td><td class="num">5.96</td><td class="num">5.67</td><td class="num">5.26</td><td class="num">4.73</td><td>圖說、時間戳、eyebrow</td></tr>
+          <tr><td><code>line-control</code></td><td class="num">52%</td><td class="num"><span style="color:#7d8585">■</span> #7d8585</td><td class="num">5.29</td><td class="num">5.03</td><td class="num">4.66</td><td class="num">4.20</td><td>輸入框外框</td></tr>
+          <tr><td><code>text-disabled</code></td><td class="num">40%</td><td class="num"><span style="color:#616869">■</span> #616869</td><td class="num">3.51</td><td>—</td><td>—</td><td>—</td><td>停用文字</td></tr>
+          <tr><td><code>line-strong</code></td><td class="num">20% α</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>表頭、時間軸</td></tr>
+          <tr><td><code>line-default</code></td><td class="num">12% α</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>分隔、表格列</td></tr>
+          <tr><td><code>line-subtle</code></td><td class="num">8% α</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>卡片外框、格線</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="eyebrow" style="margin-top:48px">Primary 與青綠色階</h3>
+    <div class="swatches reveal">
+      <div class="sw"><div class="chip-c" style="background:#033d4e;color:#edf6f5">面積</div><div class="info"><b>teal-900</b><span>#033d4e · 1.69 · 不當文字</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#05556c;color:#edf6f5">面積</div><div class="info"><b>teal-700</b><span>#05556c · 2.40 · 不當文字</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#00788c;color:#edf6f5">面積</div><div class="info"><b>teal-600</b><span>#00788c · 3.86 · 不當文字</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#2aabb0;color:#030a0c">7.17</div><div class="info"><b>primary</b><span>#2aabb0 · 馬賽克、強調字</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#3ddbd0;color:#030a0c">11.63</div><div class="info"><b>teal-400</b><span>#3ddbd0 · accent-strong</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#5ee6dc;color:#030a0c">13.14</div><div class="info"><b>teal-300</b><span>#5ee6dc · console 關鍵字</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#a3efe6;color:#030a0c">15.24</div><div class="info"><b>teal-200</b><span>#a3efe6</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#dcf0f0;color:#030a0c">16.88</div><div class="info"><b>teal-100</b><span>#dcf0f0 · product-teal-100</span></div></div>
+      <div class="sw"><div class="chip-c" style="background:#f28f3b;color:#030a0c">8.33</div><div class="info"><b>product-orange</b><span>#f28f3b · 唯一暖色</span></div></div>
+    </div>
+    <p class="spec-note">色塊上的數字 = 該色在 bg-page 上的對比（也是 text-inverse 放在該色上的對比）。深的三階只當光與面積。</p>
+
+    <h3 class="eyebrow" style="margin-top:48px">文字用的亮階</h3>
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead><tr><th>Token</th><th>值</th><th>bg 對比</th><th>示範</th></tr></thead>
+        <tbody>
+          <tr><td><code>primary</code> = <code>text-highlight</code> = <code>accent</code></td><td class="num">#2aabb0</td><td class="num">7.17</td><td><span class="hl">強調詞、stat 數字</span>、<a href="#color">連結（加底線）</a>、焦點環、選取</td></tr>
+          <tr><td><code>teal-300</code></td><td class="num">#5ee6dc</td><td class="num">13.14</td><td style="color:#5ee6dc">console 關鍵字、行內程式碼</td></tr>
+          <tr><td><code>teal-400</code> = <code>accent-strong</code></td><td class="num">#3ddbd0</td><td class="num">11.63</td><td style="color:#3ddbd0">狀態、資料流</td></tr>
+          <tr><td><code>teal-100</code></td><td class="num">#dcf0f0</td><td class="num">16.88</td><td style="color:#dcf0f0">console 字串</td></tr>
+          <tr><td><code>orange-300</code></td><td class="num">#ffb27a</td><td class="num">11.31</td><td style="color:#ffb27a">數字、示意標籤</td></tr>
+          <tr><td><code>info</code></td><td class="num">#9cb8ff</td><td class="num">10.18</td><td style="color:#9cb8ff">資訊提示（語意色）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="eyebrow" style="margin-top:48px">馬賽克四個級數（primary 純色圓點，取代六種漸層）</h3>
+    <div class="swatches reveal">
+      <div class="sw"><div class="chip-c" style="background:var(--bg-page) var(--dots-dim)">4.86</div><div class="info"><b>mosaic-dim</b><span>16% · ⌀2px · 文字下方唯一允許</span></div></div>
+      <div class="sw"><div class="chip-c lv" data-lv="2">3.86</div><div class="info"><b>mosaic-mid</b><span>28% · ⌀3px · 內文區段空白處</span></div></div>
+      <div class="sw"><div class="chip-c lv" data-lv="3">2.96</div><div class="info"><b>mosaic-bright</b><span>40% · ⌀3.5px · 主視覺、點線</span></div></div>
+      <div class="sw"><div class="chip-c lv" data-lv="4">1.71</div><div class="info"><b>mosaic-peak</b><span>64% · ⌀4.5px · 只在無文字處</span></div></div>
+    </div>
+    <p class="spec-note">色塊上的數字 = text-tertiary 疊在該級點上的對比；所以文字下方的格子一律降到 dim。</p>
+    <div class="tbl-wrap reveal" style="margin-top:24px">
+      <table>
+        <thead><tr><th>原漸層</th><th>改成</th><th>用在</th></tr></thead>
+        <tbody>
+          <tr><td><code>gradient-signal</code></td><td><span style="color:#2aabb0">■</span> primary 純色</td><td>button-signal、badge 外框、頭像、prompt focus</td></tr>
+          <tr><td><code>gradient-text</code></td><td><span class="hl">text-highlight</span></td><td>標題關鍵詞、stat 數字；一個畫面最多兩處</td></tr>
+          <tr><td><code>gradient-depth</code></td><td>馬賽克 peak／bright 塊</td><td>深度靠點的密度，不靠色彩過渡</td></tr>
+          <tr><td><code>gradient-hairline</code></td><td><span style="display:inline-block;width:72px;height:2px;background:var(--rule-h);vertical-align:middle"></span> dotted-rule</td><td>區段分隔、導覽下緣、stat 直線</td></tr>
+          <tr><td><code>gradient-beam</code></td><td>點陣光點（trail）</td><td>beam-card 外框</td></tr>
+          <tr><td><code>gradient-vignette</code></td><td>拿掉</td><td>馬賽克在邊緣自然變稀疏</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="eyebrow" style="margin-top:48px">語意色</h3>
+    <div class="row reveal">
+      <span class="chip" style="color:#34d399;background:rgba(52,211,153,.12);border-color:transparent">positive #34d399 · 10.38</span>
+      <span class="chip" style="color:#f87171;background:rgba(248,113,113,.12);border-color:transparent">negative #f87171 · 7.21</span>
+      <span class="chip" style="color:#fbbf24;background:rgba(251,191,36,.12);border-color:transparent">warning #fbbf24 · 11.95</span>
+      <span class="chip" style="color:#9cb8ff;background:rgba(91,140,255,.12);border-color:transparent">info #9cb8ff · 10.18</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══ Fields ═══ -->
+<section id="fields" aria-labelledby="f-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 03 ]</b> MOSAIC</span>
+      <h2 class="h2" id="f-t">馬賽克紋路：成塊、等高線、散點</h2>
+      <p>背景只剩兩層：底與馬賽克。每 8px 一格算一次 value noise，高處成塊、特定高度畫成等高線、其餘偶爾一顆散點；與文字重疊的格子降到 dim。連續兩個區段不都放馬賽克。</p>
+    </div>
+    <div class="bento">
+      <div class="c3 reveal"><div class="vis"><span class="cap">1 · 底 bg-page</span></div></div>
+      <div class="c3 reveal"><div class="vis"><canvas class="mosaic" data-mosaic="field" data-cap="4" data-seed="21" data-layer="regions" aria-hidden="true"></canvas><span class="cap">2 · 成塊 ≤ peak</span></div></div>
+      <div class="c3 reveal"><div class="vis"><canvas class="mosaic" data-mosaic="field" data-cap="4" data-seed="21" data-layer="contours" aria-hidden="true"></canvas><span class="cap">3 · 等高線 mid／dim</span></div></div>
+      <div class="c3 reveal"><div class="vis"><canvas class="mosaic" data-mosaic="field" data-cap="4" data-seed="21" aria-hidden="true"></canvas><span class="cap">4 · 合成（主視覺）</span></div></div>
+    </div>
+    <div class="tbl-wrap reveal" style="margin-top:24px">
+      <table>
+        <thead><tr><th>位置</th><th>最高級數</th><th>驗算</th></tr></thead>
+        <tbody>
+          <tr><td>主視覺</td><td class="num">peak（安靜區 dim）</td><td>文字只疊在 dim 上：text-tertiary 4.86</td></tr>
+          <tr><td>有內文、說明文字的區段</td><td class="num">mid（安靜區 dim）</td><td>同上</td></tr>
+          <tr><td>表格、表單、FAQ、長文</td><td class="num">不放</td><td>純底</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Typography ═══ -->
+<section id="type" class="field" aria-labelledby="t-t">
+  <canvas class="mosaic" data-mosaic="field" data-cap="2" data-seed="11" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 04 ]</b> TYPOGRAPHY</span>
+      <h2 class="h2" id="t-t">Geist + Geist Mono + Noto Sans TC</h2>
+      <p>等寬字的角色變大：小標、數值、單位、時間戳、狀態、console 全部用 Geist Mono。中文行高與字距沿用 手繪風。</p>
+    </div>
+    <div class="glass reveal" style="padding:8px 32px">
+      <div class="type-row"><div class="tag"><b>display</b>44 → 96 · 500 · 1.15</div><div style="font-size:var(--fs-display);line-height:1.15">能源<span class="hl">訊號</span></div></div>
+      <div class="type-row"><div class="tag"><b>display · Latin</b>0.95 · −0.045em</div><div lang="en" style="font-size:var(--fs-display);line-height:.95;letter-spacing:-.045em">Energy <span class="hl">Signal</span></div></div>
+      <div class="type-row"><div class="tag"><b>h1</b>36 → 64 · 1.2</div><div style="font-size:var(--fs-h1);line-height:1.2">看見每一度電的去向</div></div>
+      <div class="type-row"><div class="tag"><b>h2</b>28 → 44 · 1.25</div><div style="font-size:var(--fs-h2);line-height:1.25">從感測器到平台</div></div>
+      <div class="type-row"><div class="tag"><b>h3</b>22 → 28 · 1.35</div><div style="font-size:var(--fs-h3);line-height:1.35">閘道與資料同步</div></div>
+      <div class="type-row"><div class="tag"><b>h4</b>18 → 20 · 1.4</div><div style="font-size:var(--fs-h4);line-height:1.4">一個區段只講一件事</div></div>
+      <div class="type-row"><div class="tag"><b>body</b>16 · 1.75</div><div class="muted" style="max-width:34em">內文段落最寬 34em。深色底上長段內文容易疲勞，所以內文用 text-secondary 以上、行高 1.75；超過 600 字的內容切回淺色版面或 bg-surface 閱讀區。</div></div>
+      <div class="type-row"><div class="tag"><b>eyebrow</b>mono 12 · 0.12em</div><div><span class="eyebrow" style="margin:0"><b>[ 01 ]</b> ENERGY SIGNAL</span> <span class="eyebrow" style="margin:0 0 0 16px;letter-spacing:0;text-transform:none"><b>// 01</b> — 能源訊號</span></div></div>
+      <div class="type-row"><div class="tag"><b>mono</b>14 · tnum zero</div><div class="mono muted">› gateway.sync  電流 A · 電壓 V · 功率 kW  <span class="ok">[OK]</span></div></div>
+      <div class="type-row"><div class="tag"><b>stat</b>40 → 80 · −0.04em</div><div class="hl" style="font-size:var(--fs-stat);line-height:1;letter-spacing:-.04em;width:fit-content">0123456789</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══ Components ═══ -->
+<section id="components" aria-labelledby="c-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 05 ]</b> COMPONENTS</span>
+      <h2 class="h2" id="c-t">元件</h2>
+      <p>深底上的層次靠 1px 線、實心外環與點陣，不用模糊光暈。一個畫面一顆實心按鈕；一個視窗最多一張 beam-card、一處 mosaic-halo。</p>
+    </div>
+
+    <div class="bento">
+      <!-- Buttons -->
+      <div class="glass c12 reveal">
+        <span class="eyebrow"><b>BTN</b> BUTTONS</span>
+        <div class="row" style="margin-top:8px">
+          <a class="btn btn-primary" href="#components">button-primary</a>
+          <a class="btn btn-signal" href="#components"><svg class="sparkle" fill="currentColor" aria-hidden="true"><use href="#sparkle"/></svg>button-signal</a>
+          <a class="btn btn-glass" href="#components">button-glass</a>
+          <a class="btn btn-ghost" href="#components">button-ghost <span class="arr" aria-hidden="true">→</span></a>
+          <button class="btn btn-primary" disabled>disabled</button>
+        </div>
+        <div class="row" style="margin-top:16px">
+          <a class="btn btn-primary" href="#components">lg 48</a>
+          <a class="btn btn-primary btn-md" href="#components">md 40</a>
+          <a class="btn btn-primary btn-sm" href="#components">sm 32</a>
+        </div>
+        <p class="spec-note">primary：frost 底 void 字 18.15，hover 外環 240ms；signal：primary 純色、一頁一顆，hover 時點陣一格一格蓋過（steps(8)、600ms）；按下 scale(0.97)。</p>
+      </div>
+
+      <!-- Beam card -->
+      <div class="glass beam c7 reveal"><svg class="trail" aria-hidden="true"><rect class="trail-base" x="1" y="1" rx="23"/><rect class="trail-run" x="1" y="1" rx="23"/></svg>
+        <span class="badge-ai"><svg class="sparkle" fill="#2aabb0" aria-hidden="true"><use href="#sparkle"/></svg>beam-card</span>
+        <h3>整頁最重要的一張卡</h3>
+        <p>外框是 2px 圓點虛線，一段 10 顆 primary 實心點沿邊框一格一格跑，6 秒一圈（steps）。一個視窗最多一張。</p>
+        <div class="row" style="margin-top:20px">
+          <span class="status"><span class="pulse" aria-hidden="true"></span>ONLINE</span>
+          <span class="status"><span class="pulse" aria-hidden="true"></span>SYNCING</span>
+          <span class="demo-tag">示意</span>
+        </div>
+      </div>
+
+      <!-- Spotlight cards -->
+      <div class="glass spot c5 reveal" data-spot>
+        <span class="eyebrow"><b>SPOT</b> SPOTLIGHT</span>
+        <h3>點陣放大鏡</h3>
+        <p>游標周圍半徑 120px 的硬邊圓內露出 mosaic-mid 點陣，像一面放大鏡；外框換成 ring-sm。只在支援 hover 的裝置啟用。</p>
+      </div>
+
+      <!-- Metric tiles -->
+      <div class="glass metric spot c4 reveal" data-spot>
+        <span class="eyebrow" style="margin:0"><b>01</b> 功率</span>
+        <div class="val">— <span class="mono">kW</span></div>
+        <svg viewBox="0 0 200 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0 44 C20 40 30 22 50 26 S80 46 100 36 140 12 160 18 190 30 200 24 V64 H0Z" fill="url(#pDots)"/><path d="M0 44 C20 40 30 22 50 26 S80 46 100 36 140 12 160 18 190 30 200 24" fill="none" stroke="#2aabb0" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+        <p class="spec-note" style="margin-top:4px">metric-tile · 示意，不帶讀數</p>
+      </div>
+      <div class="glass metric spot c4 reveal" data-spot>
+        <span class="eyebrow" style="margin:0"><b>02</b> 電流</span>
+        <div class="val">— <span class="mono">A</span></div>
+        <svg viewBox="0 0 200 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C25 50 40 14 70 22 S110 50 130 40 170 16 200 28 V64 H0Z" fill="url(#pDots)"/><path d="M0 30 C25 50 40 14 70 22 S110 50 130 40 170 16 200 28" fill="none" stroke="#2aabb0" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+        <p class="spec-note" style="margin-top:4px">量測項目與單位，不帶數值</p>
+      </div>
+      <div class="glass metric spot c4 reveal" data-spot>
+        <span class="eyebrow" style="margin:0"><b>03</b> 狀態</span>
+        <div class="val" style="font-size:var(--fs-h3)"><span class="status" style="font-size:.875rem"><span class="pulse" aria-hidden="true"></span>已連線</span></div>
+        <p class="spec-note">status-dot：8px accent-strong、外圈 2s 脈衝、右側 mono 狀態字。只用在真實狀態或明確示意。</p>
+      </div>
+
+      <!-- Prompt bar -->
+      <div class="glass c12 reveal" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 32px">
+        <div class="row" style="justify-content:center;margin-bottom:20px"><span class="eyebrow" style="margin:0"><b>PROMPT</b> PROMPT-BAR</span><span class="demo-tag">示意 · 不可輸入</span></div>
+        <div class="prompt focus" role="img" aria-label="Prompt bar 示意：這套風格什麼時候不該用？">
+          <svg class="sparkle" fill="#2aabb0" aria-hidden="true"><use href="#sparkle"/></svg>
+          <span class="q">這套風格什麼時候不該用？<span class="caret" aria-hidden="true"></span></span>
+          <span class="send" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
+        </div>
+        <div class="suggest" style="justify-content:center">
+          <span class="chip">馬賽克的上限是多少？</span><span class="chip">圖表為什麼不是全綠？</span><span class="chip sel">活動頁能用嗎？</span>
+        </div>
+        <p class="spec-note">合法用法只有兩種：背後真的有功能，或標明示意的靜態展示（如本例）。</p>
+      </div>
+
+      <!-- Response card -->
+      <div class="glass c7 reveal">
+        <div class="q-bubble">這套風格什麼時候不該用？</div>
+        <div class="resp-head" style="margin-top:20px">
+          <span class="avatar" aria-hidden="true"><svg fill="currentColor"><use href="#sparkle"/></svg></span>
+          <span>科技風格</span><span class="mono faint" style="font-size:.75rem">DESIGN.MD · §A11Y</span>
+        </div>
+        <p class="resp-body stream" data-stream>超過 600 字的內容（法規、規格表、文章）不適合放在黑底上，請切回 <strong>手繪風</strong> 的淺色版面，或改用 bg-surface 的閱讀區。表單、表格、FAQ 後面也不放馬賽克。產品沒有 AI 功能時，不要用 badge-ai 寫「AI 驅動」。</p>
+        <div class="sources"><a class="chip" href="DESIGN.md">DESIGN.md</a><a class="chip" href="../hand-drawn-style/DESIGN.md">手繪風 DESIGN.md</a></div>
+      </div>
+
+      <!-- Console -->
+      <div class="c5 reveal">
+        <div class="console">
+          <div class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="file">sensor → gateway → enerlyzer</span><span class="status"><span class="pulse" aria-hidden="true"></span>LIVE</span></div>
+<pre role="log" aria-label="Console 示意" data-lines><span class="ln"><span class="c"># 示意：不含即時讀數</span></span><span class="ln"><span class="p">›</span> <span class="k">sensor</span>.connect   <span class="s">"sensor-01"</span>   <span class="ok">[OK]</span></span><span class="ln"><span class="p">›</span> <span class="k">gateway</span>.sync    <span class="s">"電流 A · 電壓 V · 功率 kW"</span></span><span class="ln"><span class="p">›</span> <span class="k">enerlyzer</span>.ingest <span class="s">"已連線"</span></span><span class="ln"><span class="p">›</span> <span class="k">report</span>.render   <span class="shimmer">分析中</span><span class="caret" aria-hidden="true"></span></span></pre>
+        </div>
+        <p class="spec-note">關鍵字 teal-300、字串 teal-100、數字 orange-300、註解 text-tertiary；每行 120ms 逐一出現。</p>
+      </div>
+    </div>
+
+    <!-- Stat row -->
+    <div class="glass reveal" style="margin-top:16px;padding:48px 24px">
+      <div class="stats">
+        <div class="stat"><div class="v hl" data-decode="112">112</div><div class="cap">家企業 · 首頁既有數字</div></div>
+        <div class="stat"><div class="v hl">—</div><div class="cap">導入年數 · 待提供</div></div>
+        <div class="stat"><div class="v hl">—</div><div class="cap">案場數 · 待提供</div></div>
+        <div class="stat"><div class="v hl">—<span class="u">%</span></div><div class="cap">節能量 · 待提供</div></div>
+      </div>
+      <p class="spec-note" style="text-align:center;margin-top:32px">stat-row：數字先亂碼再解碼（600ms）；只放品牌方提供的真實值，說明寫範圍與年份。</p>
+    </div>
+
+    <!-- Device frame -->
+    <div class="device-stage reveal" style="margin-top:48px">
+      <canvas class="mosaic" data-mosaic="halo" data-seed="5" aria-hidden="true"></canvas>
+      <div class="device" data-scan>
+        <div class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">enerlyzer · 網域待確認</span><span style="width:44px"></span></div>
+        <div class="screen">
+          <div class="scan" aria-hidden="true"></div>
+          <div class="ph"><b>平台截圖位置</b><span>只放真實截圖（2x、優先深色介面）。不斜放、不做透視；重點框最多兩處。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form + FAQ + States -->
+    <div class="bento" style="margin-top:48px">
+      <div class="glass c5 reveal">
+        <span class="eyebrow"><b>FORM</b> INPUT · STATES</span>
+        <div class="field-demo stack" style="margin-top:8px">
+          <div><label for="i1">公司名稱</label><input id="i1" class="input" placeholder="例如：某某科技"></div>
+          <div><label for="i2">Email</label><input id="i2" class="input err" value="name@" aria-invalid="true" aria-describedby="e2"><p class="err-msg" id="e2">Email 少了網域，例如 name@company.com</p></div>
+          <div class="notice pos" role="status"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>success：positive-bg 提示列</div>
+          <div class="notice neg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 8v5M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg>error：negative-bg 提示列，說明怎麼修正</div>
+          <div><span class="shimmer mono" style="font-size:.875rem">loading · 分析中</span><div class="skeleton" style="width:90%"></div><div class="skeleton" style="width:70%"></div></div>
+        </div>
+      </div>
+      <div class="glass c7 reveal">
+        <span class="eyebrow"><b>FAQ</b> FAQ-ITEM</span>
+        <div class="faq" style="margin-top:8px">
+          <div class="faq-row" data-open>
+            <button aria-expanded="true" aria-controls="a1"><span class="no">01</span><span>為什麼前景色不用純白？</span><span class="plus" aria-hidden="true">+</span></button>
+            <div class="ans stream" id="a1" data-stream>純白在黑底上會暈開（halation），長段內文特別明顯。frost #edf6f5 在 bg-page 上仍有 18.15 的對比。</div>
+          </div>
+          <div class="faq-row">
+            <button aria-expanded="false" aria-controls="a2"><span class="no">02</span><span>圖表為什麼不是全綠？</span><span class="plus" aria-hidden="true">+</span></button>
+            <div class="ans" id="a2" hidden>介面與光只用青綠色。多序列圖表要讓每條線一眼分得開，六個青綠色在色盲下會擠成一團，所以分類色保留橘、藍、粉、黃；單一序列與熱力圖仍只用青綠色階。</div>
+          </div>
+          <div class="faq-row">
+            <button aria-expanded="false" aria-controls="a3"><span class="no">03</span><span>串流文字會不會擋到螢幕閱讀器？</span><span class="plus" aria-hidden="true">+</span></button>
+            <div class="ans" id="a3" hidden>不會。完整文字一開始就在 DOM 裡，串流只是 opacity 的進場效果。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Generative visuals ═══ -->
+<section id="visuals" aria-labelledby="v-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 06 ]</b> GENERATIVE VISUALS</span>
+      <h2 class="h2" id="v-t">取代插畫的七種生成式視覺</h2>
+      <p>不畫等角插圖、不用 riso／網點插畫、不呼叫插畫 skill、不放 AI 生成圖片，也不用漸層。以下全部由本頁的 CSS／SVG／Canvas 即時產生，顏色只有 primary 與 frost。</p>
+    </div>
+    <div class="bento">
+      <div class="c8 reveal">
+        <div class="vis" style="height:320px"><canvas id="net" aria-hidden="true"></canvas><span class="cap">3 · 節點網路 · Canvas · 游標附近變亮</span></div>
+      </div>
+      <div class="c4 reveal">
+        <div class="vis" style="height:320px"><div class="orb-wrap" aria-hidden="true"><div class="orb-ring"></div><canvas class="orb" id="orb"></canvas></div><span class="cap">6 · 點陣球 · 一頁一顆</span></div>
+      </div>
+      <div class="c6 reveal">
+        <div class="vis">
+          <svg class="full flow" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet" aria-label="資料流示意：感測器、閘道、雲端平台" role="img">
+                        <path class="base" d="M90 70 C200 70 220 140 300 140"/><path class="dash" d="M90 70 C200 70 220 140 300 140"/>
+            <path class="base" d="M90 140 L300 140"/><path class="dash" d="M90 140 L300 140"/>
+            <path class="base" d="M90 210 C200 210 220 140 300 140"/><path class="dash" d="M90 210 C200 210 220 140 300 140"/>
+            <path class="base" d="M300 140 L510 140"/><path class="dash" d="M300 140 L510 140"/>
+            <circle class="node" cx="90" cy="70" r="7"/><circle class="core" cx="90" cy="70" r="3"/>
+            <circle class="node" cx="90" cy="140" r="7"/><circle class="core" cx="90" cy="140" r="3"/>
+            <circle class="node" cx="90" cy="210" r="7"/><circle class="core" cx="90" cy="210" r="3"/>
+            <circle class="node" cx="300" cy="140" r="10"/><circle class="core" cx="300" cy="140" r="4"/>
+            <circle class="node" cx="510" cy="140" r="12"/><circle class="core" cx="510" cy="140" r="5"/>
+            <text x="90" y="48" text-anchor="middle">SENSOR</text>
+            <text x="300" y="118" text-anchor="middle">GATEWAY</text>
+            <text x="510" y="114" text-anchor="middle">ENERLYZER</text>
+          </svg>
+          <span class="cap">4 · 資料流線 · 架構需為真實架構</span>
+        </div>
+      </div>
+      <div class="c6 reveal">
+        <div class="vis"><svg class="full" id="wave" viewBox="0 0 600 280" preserveAspectRatio="none" aria-hidden="true"></svg><span class="cap">5 · 波形 · 示意不帶座標軸與數字</span></div>
+      </div>
+      <div class="c4 reveal"><div class="vis" style="height:200px"><canvas class="mosaic" data-mosaic="field" data-cap="4" data-seed="33" aria-hidden="true"></canvas><span class="cap">1 · 馬賽克場</span></div></div>
+      <div class="c4 reveal"><div class="vis" style="height:200px"><canvas class="mosaic" data-mosaic="halo" data-seed="9" aria-hidden="true"></canvas><span class="cap">2 · mosaic-halo</span></div></div>
+      <div class="c4 reveal"><div class="vis" style="height:200px;display:grid;place-items:center"><div style="text-align:center"><div class="mono hl" style="font-size:2rem;width:fit-content;margin:0 auto" data-decode="SIGNAL">SIGNAL</div><p class="spec-note">捲到這裡時解碼一次</p></div><span class="cap">7 · 掃描與解碼</span></div></div>
+    </div>
+    <div class="tbl-wrap reveal" style="margin-top:24px">
+      <table>
+        <thead><tr><th>#</th><th>視覺</th><th>用在</th><th>資料來源</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>馬賽克場</td><td>主視覺、隔段背景</td><td>純裝飾，不代表地圖或分布</td></tr>
+          <tr><td class="num">2</td><td>mosaic-halo</td><td>裝置框、截圖背後</td><td>純裝飾</td></tr>
+          <tr><td class="num">3</td><td>節點網路</td><td>IoT 連網、多案場主視覺</td><td>分群對應真實架構，不寫數量就不精確對應</td></tr>
+          <tr><td class="num">4</td><td>資料流線</td><td>感測 → 閘道 → 平台</td><td>真實系統架構，端點有 mono 文字標籤</td></tr>
+          <tr><td class="num">5</td><td>波形</td><td>能源、用電、節能主題</td><td>真實資料畫真實曲線；示意不帶軸與數字</td></tr>
+          <tr><td class="num">6</td><td>點陣球</td><td>收尾區段、空狀態</td><td>純裝飾，一頁一顆</td></tr>
+          <tr><td class="num">7</td><td>掃描與解碼</td><td>裝置框、stat-row、eyebrow</td><td>解碼後必須是真值</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="list reveal" style="margin-top:24px">
+      <li>能用文字說清楚的，不畫。一個視窗最多一個「會動」的 Canvas；靜止的馬賽克不算。</li>
+      <li>每個生成式視覺都要有靜態版（reduced-motion、低效能裝置、Figma 交接）。</li>
+      <li>照片允許疊一層 void 55% 純色 + teal-600 12% 純色（不用漸層壓暗），這點與 手繪風 相反。</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══ Elevation ═══ -->
+<section id="elevation" aria-labelledby="e-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 07 ]</b> ELEVATION</span>
+      <h2 class="h2" id="e-t">層次靠線、外環與點陣</h2>
+    </div>
+    <div class="bento">
+      <div class="c3 reveal"><div class="glass" style="box-shadow:var(--el-hairline);padding:24px"><span class="eyebrow" style="margin:0"><b>hairline</b></span><p>表格容器、小面板</p></div></div>
+      <div class="c3 reveal"><div class="glass" style="padding:24px"><span class="eyebrow" style="margin:0"><b>glass</b></span><p>玻璃卡片（主力）</p></div></div>
+      <div class="c3 reveal"><div class="glass" style="background:var(--bg-overlay);box-shadow:var(--el-float);padding:24px"><span class="eyebrow" style="margin:0"><b>float</b></span><p>tooltip、下拉選單</p></div></div>
+      <div class="c3 reveal"><div class="glass" style="box-shadow:var(--el-ring-sm);padding:24px"><span class="eyebrow" style="margin:0"><b>ring-sm</b></span><p>輸入框 focus、chip hover</p></div></div>
+      <div class="c6 reveal"><div class="glass" style="box-shadow:var(--el-ring-md);padding:24px"><span class="eyebrow" style="margin:0"><b>ring-md</b></span><p>主按鈕 hover、prompt bar focus、button-signal</p></div></div>
+      <div class="c6 reveal"><div class="glass" style="box-shadow:var(--el-device);background:var(--bg-surface);padding:24px"><span class="eyebrow" style="margin:0"><b>device</b></span><p>裝框的平台截圖；框外改用 mosaic-halo</p></div></div>
+    </div>
+    <ul class="list reveal" style="margin-top:24px">
+      <li>外環放在 <code>::after</code>，hover 動 opacity，不直接改 box-shadow。青綠色的東西一律不模糊。</li>
+      <li>一個視窗最多一處 mosaic-halo；同時可見的 backdrop-filter ≤ 6 個。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ Motion ═══ -->
+<section id="motion" class="field" aria-labelledby="m-t">
+  <canvas class="mosaic" data-mosaic="field" data-cap="2" data-seed="17" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 08 ]</b> MOTION</span>
+      <h2 class="h2" id="m-t">expo-out 與一步一格</h2>
+      <p>介面元素用 easing-out = cubic-bezier(0.16, 1, 0.3, 1)；馬賽克、光點、掃描列一律 steps()，每秒最多 8 格。常駐動態在離開畫面與分頁隱藏時暫停；一個視窗同時最多三種。右上角可以關掉本頁動態。</p>
+    </div>
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead><tr><th>#</th><th>模式</th><th>屬性</th><th>時長</th><th>reduced-motion</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>標題模糊進場</td><td>opacity、translateY 12px、blur 8px → 0；逐字／逐詞</td><td class="num">800ms · 30ms stagger · ≤ 1.2s</td><td>直接顯示</td></tr>
+          <tr><td class="num">2</td><td>內容進場</td><td>opacity、translateY 12px</td><td class="num">600ms · 60ms stagger</td><td>直接顯示</td></tr>
+          <tr><td class="num">3</td><td>逐字串流</td><td>每 token opacity；結尾游標</td><td class="num">28ms/token · ≤ 2.4s</td><td>整段顯示</td></tr>
+          <tr><td class="num">4</td><td>閃爍游標</td><td>opacity steps(2)</td><td class="num">1s</td><td>靜止</td></tr>
+          <tr><td class="num">5</td><td>亂碼解碼</td><td>隨機字元由左到右鎖定</td><td class="num">600ms · 30ms/位</td><td>直接顯示真值</td></tr>
+          <tr><td class="num">6</td><td>點陣載入</td><td>三顆 primary 圓點逐顆出現</td><td class="num">1.2s · steps(4)</td><td>三顆靜止</td></tr>
+          <tr><td class="num">7</td><td>光點繞邊</td><td>stroke-dashoffset，一步一顆點</td><td class="num">6s · steps(周長÷6)</td><td>只留點線外框</td></tr>
+          <tr><td class="num">8</td><td>點陣放大鏡</td><td>--mx／--my → clip-path circle()</td><td class="num">即時</td><td>不啟用</td></tr>
+          <tr><td class="num">9</td><td>外環 hover</td><td>外環層 opacity</td><td class="num">240ms</td><td>保留</td></tr>
+          <tr><td class="num">10</td><td>按下</td><td>scale(0.97)</td><td class="num">80ms</td><td>不縮放</td></tr>
+          <tr><td class="num">11</td><td>狀態脈衝</td><td>scale 1 → 2.4、opacity 0.6 → 0</td><td class="num">2s 循環</td><td>靜止圓點</td></tr>
+          <tr><td class="num">12</td><td>掃描列</td><td>一列 peak 圓點 translateY</td><td class="num">1200ms · 一步 8px</td><td>直接顯示</td></tr>
+          <tr><td class="num">13</td><td>資料流</td><td>圓點虛線 stroke-dashoffset</td><td class="num">2–4s · steps()</td><td>靜止點線</td></tr>
+          <tr><td class="num">14</td><td>馬賽克漂移</td><td>noise 取樣位置平移，格子在級數間跳</td><td class="num">8fps · 只在主視覺</td><td>靜止</td></tr>
+          <tr><td class="num">15</td><td>點陣球呼吸</td><td>半徑 ±1 格；點線外環 rotate</td><td class="num">8s；外環 40s · steps</td><td>靜止</td></tr>
+          <tr><td class="num">16</td><td>節點網路</td><td>Canvas 漂移；游標 120px 內變亮</td><td class="num">≤ 0.15px/幀</td><td>靜態圖</td></tr>
+          <tr><td class="num">17</td><td>主按鈕點陣蓋過</td><td>clip-path inset() 由左往右</td><td class="num">600ms · steps(8)</td><td>不播</td></tr>
+          <tr><td class="num">18</td><td>頁面載入</td><td>badge → 標題 → lead → 按鈕 → 裝置框</td><td class="num">≤ 1.4s</td><td>直接顯示</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══ Data viz ═══ -->
+<section id="dataviz" aria-labelledby="d-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 09 ]</b> DATA VISUALIZATION</span>
+      <h2 class="h2" id="d-t">主序列青綠，分類色是唯一例外</h2>
+      <p>色盲檢查（Machado 2009、CIE76 ΔE）最接近的一對：一般 42.8、紅色盲 13.4、綠色盲 15.1、藍色盲 15.8。單一序列與熱力圖只用青綠色階（分開的色階，不做連續漸層）。</p>
+    </div>
+    <div class="bento">
+      <div class="glass c8 chart reveal">
+        <span class="eyebrow"><b>示意</b> 不帶數字與座標值</span>
+        <svg id="chart" viewBox="0 0 640 260" aria-label="折線圖示意：六個序列，主序列下方填點陣" role="img"></svg>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="c4 reveal">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Token</th><th>值</th><th>bg</th></tr></thead>
+            <tbody>
+              <tr><td><span style="color:var(--viz-1)">●</span> viz-1</td><td class="num">#3ddbd0</td><td class="num">11.63</td></tr>
+              <tr><td><span style="color:var(--viz-2)">●</span> viz-2</td><td class="num">#f28f3b</td><td class="num">8.33</td></tr>
+              <tr><td><span style="color:var(--viz-3)">●</span> viz-3</td><td class="num">#6f8cff</td><td class="num">6.53</td></tr>
+              <tr><td><span style="color:var(--viz-4)">●</span> viz-4</td><td class="num">#f06fd0</td><td class="num">7.50</td></tr>
+              <tr><td><span style="color:var(--viz-5)">●</span> viz-5</td><td class="num">#edf6f5</td><td class="num">18.15</td></tr>
+              <tr><td><span style="color:var(--viz-6)">●</span> viz-6</td><td class="num">#fbe36b</td><td class="num">15.49</td></tr>
+              <tr><td><span style="color:var(--viz-other)">●</span> viz-other</td><td class="num">#616869</td><td class="num">3.51</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="list" style="margin-top:20px">
+          <li>主序列不發光：下方面積填 6px 同色點陣（26%）；其他序列沒有面積。</li>
+          <li>顏色不是唯一辨識：加線型、端點形狀或直接標名稱。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ A11y ═══ -->
+<section id="a11y" aria-labelledby="a-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 10 ]</b> A11Y &amp; PERF</span>
+      <h2 class="h2" id="a-t">無障礙與效能預算</h2>
+    </div>
+    <div class="bento">
+      <div class="glass c6 reveal">
+        <span class="eyebrow"><b>AVOID</b> 要避開的組合</span>
+        <ul class="list dont">
+          <li>任何文字疊在 mosaic-mid 以上的點上（text-tertiary 在 mid 3.86、bright 2.96）；文字下方一律降到 dim</li>
+          <li>viz-other、text-disabled 放在 bg-overlay（2.79）；深青三階當任何文字</li>
+          <li>brand-logo #2b5068 放在任何深底（≤ 2.35），改用 frost 單色 logo</li>
+          <li>text-secondary 以下的字直接疊在未壓暗的照片上</li>
+        </ul>
+      </div>
+      <div class="glass c6 reveal">
+        <span class="eyebrow"><b>FALLBACK</b> 降級</span>
+        <ul class="list">
+          <li><strong>reduced-motion：</strong>常駐動態靜止；串流、解碼、模糊進場直接顯示</li>
+          <li><strong>reduced-transparency：</strong>毛玻璃改不透明；馬賽克上限降到 mid</li>
+          <li><strong>forced-colors：</strong>隱藏馬賽克、強調字退回 CanvasText、補 1px 外框</li>
+          <li><strong>prefers-contrast: more：</strong>隱藏馬賽克</li>
+        </ul>
+      </div>
+      <div class="glass c12 reveal">
+        <span class="eyebrow"><b>BUDGET</b> 一個視窗最多</span>
+        <div class="stats" style="margin-top:16px">
+          <div class="stat"><div class="v hl">1</div><div class="cap">會動的 Canvas</div></div>
+          <div class="stat"><div class="v hl">6</div><div class="cap">backdrop-filter</div></div>
+          <div class="stat"><div class="v hl">1</div><div class="cap">mosaic-halo</div></div>
+          <div class="stat"><div class="v hl">3</div><div class="cap">常駐動態</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══ Do / Don't ═══ -->
+<section id="dos" aria-labelledby="dd-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 11 ]</b> DO / DON'T</span>
+      <h2 class="h2" id="dd-t">Do's and Don'ts</h2>
+    </div>
+    <div class="bento">
+      <div class="glass c6 reveal">
+        <span class="eyebrow"><b>DO</b></span>
+        <ul class="list">
+          <li>黑底配 primary 點陣；層次靠點的疏密、四個級數與 1px 線</li>
+          <li>點陣、強調字、外環都是 primary #2aabb0 的純色或固定透明度</li>
+          <li>圓點畫在 8px 格子中央；動態一步一格</li>
+          <li>eyebrow、數值、單位、狀態用 Geist Mono</li>
+          <li>每個視覺由程式生成，並且有靜態版</li>
+          <li>串流、解碼的最終文字一開始就在 DOM 裡</li>
+          <li>每個主張旁邊放證明</li>
+        </ul>
+      </div>
+      <div class="glass c6 reveal">
+        <span class="eyebrow"><b>DON'T</b></span>
+        <ul class="list dont">
+          <li>任何漸層（linear／radial／conic、漸層字、暗角、極光）與模糊的青綠光暈</li>
+          <li>任何插畫，也不呼叫插畫 skill</li>
+          <li>對沒有 AI 功能的產品寫「AI 驅動」；假裝能輸入的 prompt bar</li>
+          <li>紫、藍、洋紅；深青（#033d4e／#05556c／#00788c）當小字</li>
+          <li>強調字用在內文、連結、按鈕；一個畫面超過兩處</li>
+          <li>連續兩段都放馬賽克；表單、表格、長文後面放馬賽克；讓馬賽克看起來像真實地圖</li>
+          <li>純白 #ffffff 當內文色；純黑 #000 當頁面底；圖表以外用 viz-3／4／6</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Diff ═══ -->
+<section id="diff" aria-labelledby="df-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><b>[ 12 ]</b> DIFF</span>
+      <h2 class="h2" id="df-t">與 手繪風 的差異</h2>
+    </div>
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead><tr><th>#</th><th>項目</th><th>手繪風</th><th>科技風格</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>底色</td><td>白 #ffffff</td><td>帶青的虛空 #030a0c，只有深色</td></tr>
+          <tr><td class="num">2</td><td>前景色</td><td>ink #0d1f27</td><td>frost #edf6f5</td></tr>
+          <tr><td class="num">3</td><td>中性色階</td><td>ink 混白</td><td>frost 混黑（同一套做法）</td></tr>
+          <tr><td class="num">4</td><td>強調色</td><td>一個青 #00788c</td><td>primary #2aabb0（含連結、焦點環）</td></tr>
+          <tr><td class="num">5</td><td>漸層</td><td>兩種靜態；禁多色、文字、按鈕漸層</td><td>不用漸層；primary 純色與馬賽克</td></tr>
+          <tr><td class="num">6</td><td>層次</td><td>柔影</td><td>1px 線 + 實心外環 + 馬賽克</td></tr>
+          <tr><td class="num">7</td><td>毛玻璃</td><td>兩處</td><td>導覽、prompt bar、次按鈕（≤ 6）</td></tr>
+          <tr><td class="num">8</td><td>背景</td><td>純白或 bg-subtle</td><td>primary 圓點馬賽克</td></tr>
+          <tr><td class="num">9</td><td>雜訊</td><td>Don't</td><td>Don't（沒有漸層就不需要）</td></tr>
+          <tr><td class="num">10</td><td>字體</td><td>Jost + IBM Plex Mono</td><td>Geist + Geist Mono</td></tr>
+          <tr><td class="num">11</td><td>等寬字</td><td>只給規格數值</td><td>小標、數值、狀態、console</td></tr>
+          <tr><td class="num">12</td><td>display 上限</td><td>88px</td><td>96px</td></tr>
+          <tr><td class="num">13</td><td>主按鈕</td><td>accent 底白字；實體按鍵</td><td>frost 白鍵 + 外環；primary 純色按鈕</td></tr>
+          <tr><td class="num">14</td><td>導覽</td><td>置中玻璃膠囊</td><td>滿寬玻璃列</td></tr>
+          <tr><td class="num">15</td><td>視覺素材</td><td>等角插圖 + 截圖 + 照片</td><td>不用插畫；七種生成式視覺 + 截圖 + 照片</td></tr>
+          <tr><td class="num">16</td><td>照片處理</td><td>不加濾鏡</td><td>允許壓暗與冷色疊色</td></tr>
+          <tr><td class="num">17</td><td>動態</td><td>160ms 為主、無環境動態</td><td>串流、解碼、光點、馬賽克漂移、脈衝；馬賽克一律 steps()</td></tr>
+          <tr><td class="num">18</td><td>blur</td><td>四處</td><td>標題進場、毛玻璃</td></tr>
+          <tr><td class="num">19</td><td>新元件</td><td>—</td><td>badge-ai、beam-card、spotlight-card、prompt-bar、console、response-card、status-dot、metric-tile、dotted-rule</td></tr>
+          <tr><td class="num">20</td><td>資料色盤</td><td>白底六色</td><td>深底六色（主序列青綠），排除紫色</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap"><span>LANDING PAGE STYLE · 科技風格 · 2026-11-26</span><span>SOURCE · DESIGN.md</span></div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var rm=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var stored=null;
+  try{stored=localStorage.getItem('ns-motion')}catch(e){}
+  var motionOff=stored==='off';
+  var toggle=document.getElementById('motionToggle');
+  function applyMotion(){
+    document.body.classList.toggle('no-motion',motionOff);
+    toggle.textContent='動態：'+(motionOff?'關':'開');
+    toggle.setAttribute('aria-pressed',String(motionOff));
+  }
+  applyMotion();
+  toggle.addEventListener('click',function(){
+    motionOff=!motionOff;applyMotion();
+    try{localStorage.setItem('ns-motion',motionOff?'off':'on')}catch(e){}
+  });
+  function still(){return rm.matches||motionOff}
+
+  /* Nav hairline */
+  var nav=document.getElementById('nav');
+  addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>8)},{passive:true});
+
+  /* Split hero title into words / CJK chunks */
+  document.querySelectorAll('[data-split]').forEach(function(el){
+    var i=0;
+    (function walk(node){
+      Array.from(node.childNodes).forEach(function(n){
+        if(n.nodeType===3){
+          var parts=n.textContent.match(/[　-鿿＀-￯]{1,2}|[^\s　-鿿＀-￯]+|\s+/g)||[];
+          var frag=document.createDocumentFragment();
+          parts.forEach(function(p){
+            if(/^\s+$/.test(p)){frag.appendChild(document.createTextNode(p));return}
+            var s=document.createElement('span');s.className='w';s.textContent=p;
+            s.style.transitionDelay=(i++*30)+'ms';frag.appendChild(s);
+          });
+          n.replaceWith(frag);
+        }else if(n.nodeType===1){walk(n)}
+      });
+    })(el);
+  });
+
+  /* Stream text: wrap tokens */
+  document.querySelectorAll('[data-stream]').forEach(function(el){
+    var walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nodes=[],n;
+    while((n=walker.nextNode()))nodes.push(n);
+    nodes.forEach(function(t){
+      var parts=t.textContent.match(/[　-鿿＀-￯]{1,3}|[^\s　-鿿＀-￯]+|\s+/g)||[];
+      var frag=document.createDocumentFragment();
+      parts.forEach(function(p){var s=document.createElement('span');s.className='t';s.textContent=p;frag.appendChild(s)});
+      t.replaceWith(frag);
+    });
+  });
+  function playStream(el){
+    var ts=el.querySelectorAll('.t');
+    if(still()||ts.length*28>2400){ts.forEach(function(t){t.classList.add('on')});return}
+    ts.forEach(function(t,i){setTimeout(function(){t.classList.add('on')},i*28)});
+  }
+
+  /* Decode */
+  var glyphs='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ▓░';
+  function decode(el){
+    var final=el.getAttribute('data-decode');
+    if(still()){el.textContent=final;return}
+    el.setAttribute('aria-label',final);
+    var start=performance.now(),dur=600;
+    (function frame(now){
+      var p=Math.min(1,(now-start)/dur),locked=Math.floor(p*final.length),out='';
+      for(var i=0;i<final.length;i++){out+= i<locked?final[i]:glyphs[(Math.random()*glyphs.length)|0]}
+      el.textContent=out;
+      if(p<1)requestAnimationFrame(frame);else el.textContent=final;
+    })(start);
+  }
+
+  /* Reveal observer */
+  var revealTargets=document.querySelectorAll('.reveal,.blur-in,[data-stream],[data-decode],[data-scan]');
+  var idx=0;
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var el=e.target;io.unobserve(el);
+      if(el.matches('.reveal')){el.style.transitionDelay=Math.min((idx++%8)*60,420)+'ms';el.classList.add('in')}
+      if(el.matches('.blur-in'))el.classList.add('in');
+      if(el.matches('[data-stream]'))playStream(el);
+      if(el.matches('[data-decode]'))decode(el);
+      if(el.matches('[data-scan]')){var sh=el.querySelector('.screen').offsetHeight;el.style.setProperty('--h',sh+'px');el.style.setProperty('--steps',Math.max(1,Math.round(sh/8)));if(!still())el.classList.add('scanned')}
+    });
+  },{threshold:.2});
+  revealTargets.forEach(function(el){io.observe(el)});
+  setInterval(function(){idx=0},400);
+
+  /* Pause ambient animation offscreen */
+  var amb=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('paused',!e.isIntersecting)})});
+  document.querySelectorAll('section').forEach(function(s){amb.observe(s)});
+
+  /* Spotlight */
+  if(matchMedia('(hover: hover)').matches){
+    document.querySelectorAll('[data-spot]').forEach(function(card){
+      var raf=0;
+      card.addEventListener('pointermove',function(ev){
+        if(raf)return;
+        raf=requestAnimationFrame(function(){
+          var r=card.getBoundingClientRect();
+          card.style.setProperty('--mx',(ev.clientX-r.left)+'px');
+          card.style.setProperty('--my',(ev.clientY-r.top)+'px');
+          raf=0;
+        });
+      });
+    });
+  }
+
+  /* FAQ */
+  document.querySelectorAll('.faq-row button').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var row=btn.parentElement,ans=row.querySelector('.ans'),open=btn.getAttribute('aria-expanded')==='true';
+      btn.setAttribute('aria-expanded',String(!open));
+      if(open){row.removeAttribute('data-open');ans.hidden=true}
+      else{row.setAttribute('data-open','');ans.hidden=false;ans.style.opacity=0;ans.style.transform='translateY(8px)';
+        requestAnimationFrame(function(){ans.style.transition='opacity 240ms cubic-bezier(.16,1,.3,1),transform 240ms cubic-bezier(.16,1,.3,1)';ans.style.opacity=1;ans.style.transform='none'})}
+    });
+  });
+
+  /* Waveform (示意) */
+  (function(){
+    var svg=document.getElementById('wave');if(!svg)return;
+    var ns='http://www.w3.org/2000/svg',W=600,H=280,pts=[];
+    for(var x=0;x<=W;x+=6){var t=x/W*Math.PI*2;pts.push([x,H*.55-Math.sin(t*1.5)*42-Math.sin(t*4.2+1)*16-Math.sin(t*9+.4)*6])}
+    var d='M'+pts.map(function(p){return p[0]+' '+p[1].toFixed(1)}).join(' L');
+    svg.innerHTML='<path d="'+d+' L'+W+' '+H+' L0 '+H+'Z" fill="url(#pDots)"/>'+
+      '<path d="'+d+'" fill="none" stroke="#2aabb0" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+  })();
+
+  /* Chart (示意) */
+  (function(){
+    var svg=document.getElementById('chart'),lg=document.getElementById('legend');if(!svg)return;
+    var cols=['#3ddbd0','#f28f3b','#6f8cff','#f06fd0','#edf6f5','#fbe36b'],dash=['','6 4','2 4','10 4 2 4','1 0','4 2'];
+    var W=640,H=260,P=24,h='';
+    for(var g=0;g<4;g++){var y=P+g*(H-2*P)/3;h+='<line x1="0" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="rgba(237,246,245,.06)"/>'}
+    cols.forEach(function(c,k){
+      var pts=[];for(var i=0;i<=12;i++){var x=i/12*W;var y=H*.5+Math.sin(i*.7+k*1.3)*(26+k*4)+(k-2.5)*18;pts.push(x.toFixed(0)+' '+y.toFixed(1))}
+      var d='M'+pts.join(' L');
+      if(k===0){h+='<path d="'+d+' L'+W+' '+H+' L0 '+H+'Z" fill="url(#pDotsViz)"/>'}
+      h+='<path class="cl" d="'+d+'" fill="none" stroke="'+c+'" stroke-width="2" stroke-dasharray="'+dash[k]+'" stroke-linejoin="round"/>';
+      lg.insertAdjacentHTML('beforeend','<span><i style="background:'+c+'"></i>序列 '+(k+1)+'</span>');
+    });
+    svg.innerHTML=h;
+  })();
+
+  /* Node network */
+  (function(){
+    var cv=document.getElementById('net');if(!cv)return;
+    var ctx=cv.getContext('2d'),dpr=Math.min(2,devicePixelRatio||1),W,H,nodes=[],mouse={x:-999,y:-999},running=false,raf=0;
+    function size(){var r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+    function init(){size();nodes=[];var n=W<500?36:64;for(var i=0;i<n;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,s:Math.random()<.12?4:3})}
+    function draw(move){
+      ctx.clearRect(0,0,W,H);ctx.setLineDash([0,6]);ctx.lineCap='round';ctx.lineWidth=2;
+      for(var i=0;i<nodes.length;i++){var a=nodes[i];
+        if(move){a.x+=a.vx*.5;a.y+=a.vy*.5;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1}
+        for(var j=i+1;j<nodes.length;j++){var b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
+          if(d<110){var mx=(a.x+b.x)/2-mouse.x,my=(a.y+b.y)/2-mouse.y,near=Math.sqrt(mx*mx+my*my)<120;
+            ctx.strokeStyle=near?'#2aabb0':(d<70?'rgba(42,171,176,.40)':'rgba(42,171,176,.16)');ctx.beginPath();ctx.moveTo(Math.round(a.x),Math.round(a.y));ctx.lineTo(Math.round(b.x),Math.round(b.y));ctx.stroke()}}
+      }
+      ctx.setLineDash([]);
+      nodes.forEach(function(a){var dx=a.x-mouse.x,dy=a.y-mouse.y,near=dx*dx+dy*dy<14400,s=near?a.s+2:a.s;
+        ctx.fillStyle=near?'#2aabb0':'rgba(42,171,176,.64)';ctx.beginPath();ctx.arc(a.x,a.y,s/2,0,7);ctx.fill()});
+    }
+    function loop(){draw(true);raf=requestAnimationFrame(loop)}
+    function start(){if(running||still())return;running=true;loop()}
+    function stop(){running=false;cancelAnimationFrame(raf)}
+    init();draw(false);
+    addEventListener('resize',function(){init();draw(false)});
+    cv.parentElement.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;if(!running)draw(false)});
+    cv.parentElement.addEventListener('pointerleave',function(){mouse.x=mouse.y=-999;if(!running)draw(false)});
+    new IntersectionObserver(function(es){es[0].isIntersecting?start():stop()}).observe(cv);
+    document.addEventListener('visibilitychange',function(){document.hidden?stop():start()});
+    toggle.addEventListener('click',function(){still()?stop():start()});
+  })();
+
+  /* Mosaic：primary 純色圓點；沒有漸層、沒有模糊。級數 1–4 = dim／mid／bright／peak */
+  (function(){
+    var LV=[null,{a:.16,s:2},{a:.28,s:3},{a:.40,s:3.5},{a:.64,s:4.5}],P=8;
+    var rTrans=matchMedia('(prefers-reduced-transparency: reduce)');
+    var DEFAULT_QUIET='.sec-head>*,.glass,.tbl-wrap,.swatches,.spec-note,.grad-list,.row,.list,.decisions li,.eyebrow,.bento';
+    function hash(x,y,s){var h=Math.imul(x|0,374761393)^Math.imul(y|0,668265263)^Math.imul(s|0,1274126177);h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)/4294967296}
+    function vn(x,y,s){var xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);
+      var a=hash(xi,yi,s),b=hash(xi+1,yi,s),c=hash(xi,yi+1,s),d=hash(xi+1,yi+1,s);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v}
+    function fbm(x,y,s){return vn(x,y,s)*.57+vn(x*2.03,y*2.03,s+1)*.29+vn(x*4.1,y*4.1,s+2)*.14}
+    function rects(cv,sel,base,pad){
+      var host=cv.parentElement,out=[];if(!sel)return out;
+      host.querySelectorAll(sel).forEach(function(el){if(el===cv)return;var r=el.getBoundingClientRect();if(!r.width)return;
+        out.push([r.left-base.left-pad,r.top-base.top-pad,r.right-base.left+pad,r.bottom-base.top+pad])});
+      return out;
+    }
+    function inside(x,y,list){for(var k=0;k<list.length;k++){var q=list[k];if(x>=q[0]&&x<=q[2]&&y>=q[1]&&y<=q[3])return true}return false}
+    function paint(cv,t){
+      var base=cv.getBoundingClientRect(),W=Math.round(base.width),H=Math.round(base.height);if(!W||!H)return;
+      var dpr=Math.min(2,Math.round(devicePixelRatio||1)),ctx=cv.getContext('2d');
+      if(cv.width!==W*dpr||cv.height!==H*dpr){cv.width=W*dpr;cv.height=H*dpr}
+      ctx.clearRect(0,0,cv.width,cv.height);
+      var seed=+cv.dataset.seed||1,cap=+(cv.dataset.cap||4),mode=cv.dataset.mosaic,layer=cv.dataset.layer||'all';
+      if(rTrans.matches)cap=Math.min(cap,2);
+      var inVis=cv.parentElement.classList.contains('vis'),sc=+(cv.dataset.scale||(inVis?120:240));
+      var quiet=rects(cv,cv.dataset.quiet||(inVis?'.cap':DEFAULT_QUIET),base,16);
+      var frame=null;
+      if(mode==='halo'){var dev=cv.parentElement.querySelector('.device');
+        if(dev){var r=dev.getBoundingClientRect();frame=[r.left-base.left,r.top-base.top,r.right-base.left,r.bottom-base.top];quiet=[]}
+        else frame=[W*.3,H*.3,W*.7,H*.7]}
+      var cols=Math.ceil(W/P),rows=Math.ceil(H/P),bk=[[],[],[],[],[]];
+      for(var j=0;j<rows;j++)for(var i=0;i<cols;i++){
+        var x=i*P+P/2,y=j*P+P/2,h=hash(i,j,seed+99),lv=0;
+        var n=(fbm(x/sc+t,y/sc+t*.35,seed)-.5)*1.7+.5;
+        if(frame){
+          if(x>frame[0]&&x<frame[2]&&y>frame[1]&&y<frame[3])continue;
+          var dx=Math.max(frame[0]-x,0,x-frame[2]),dy=Math.max(frame[1]-y,0,y-frame[3]),ring=Math.floor(Math.max(dx,dy)/16);
+          if(ring<4){if(h<.9-ring*.2)lv=4-ring}
+          else if(n>.7&&h>.3)lv=2;else if(h<.012)lv=1;
+        }else{
+          if(layer!=='contours'&&n>.62&&h>.25)lv=n>.85?4:n>.74?3:2;
+          else if(layer!=='regions'&&Math.abs(n-.5)<.014)lv=2;
+          else if(layer!=='regions'&&Math.abs(n-.38)<.01)lv=1;
+          else if(layer==='all'&&h<.015)lv=1;
+        }
+        if(!lv)continue;
+        lv=Math.min(lv,cap);
+        if(inside(x,y,quiet))lv=1;
+        bk[lv].push(i,j);
+      }
+      for(var l=1;l<5;l++){var L=LV[l],rad=L.s/2*dpr,c0=P/2*dpr;ctx.fillStyle='rgba(42,171,176,'+L.a+')';ctx.beginPath();
+        for(var k=0;k<bk[l].length;k+=2){var cx=bk[l][k]*P*dpr+c0,cy=bk[l][k+1]*P*dpr+c0;ctx.moveTo(cx+rad,cy);ctx.arc(cx,cy,rad,0,6.2832)}
+        ctx.fill()}
+    }
+    var all=[].slice.call(document.querySelectorAll('canvas.mosaic'));
+    function paintAll(){all.forEach(function(cv){paint(cv,cv._t||0)})}
+    paintAll();
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(paintAll);
+    addEventListener('load',paintAll);
+    var rt=0;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(paintAll,150)});
+    /* 只有主視覺會漂移：8fps、每秒 0.5 格 */
+    all.filter(function(cv){return cv.hasAttribute('data-drift')}).forEach(function(cv){
+      var timer=0,vis=false;cv._t=0;
+      function run(){if(timer||!vis||document.hidden||still())return;timer=setInterval(function(){cv._t+=4/240/8;paint(cv,cv._t)},125)}
+      function halt(){clearInterval(timer);timer=0}
+      new IntersectionObserver(function(es){vis=es[0].isIntersecting;vis?run():halt()}).observe(cv);
+      document.addEventListener('visibilitychange',function(){document.hidden?halt():run()});
+      toggle.addEventListener('click',function(){still()?halt():run()});
+    });
+  })();
+
+  /* 點陣球：半色調球體，半徑一步一格地呼吸 */
+  (function(){
+    var cv=document.getElementById('orb');if(!cv)return;
+    var S=176,P=8,dpr=Math.min(2,Math.round(devicePixelRatio||1)),ctx=cv.getContext('2d'),big=false,timer=0;
+    cv.width=S*dpr;cv.height=S*dpr;
+    var LV=[null,{a:.28,s:2.5},{a:.40,s:3.5},{a:.64,s:5},{a:1,s:7}],Lx=-.45,Ly=-.5,Lz=.74;
+    function draw(){
+      ctx.clearRect(0,0,cv.width,cv.height);var R=big?84:76,c=S/2;
+      for(var j=0;j<S/P;j++)for(var i=0;i<S/P;i++){
+        var x=i*P+P/2-c,y=j*P+P/2-c,d2=x*x+y*y;if(d2>R*R)continue;
+        var nx=x/R,ny=y/R,nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny)),sh=Math.max(0,nx*Lx+ny*Ly+nz*Lz);
+        var lv=sh>.9?4:sh>.65?3:sh>.35?2:1,L=LV[lv];
+        ctx.fillStyle='rgba(42,171,176,'+L.a+')';ctx.beginPath();ctx.arc((i*P+P/2)*dpr,(j*P+P/2)*dpr,L.s/2*dpr,0,6.2832);ctx.fill();
+      }
+    }
+    draw();
+    function run(){if(timer||still())return;timer=setInterval(function(){big=!big;draw()},4000)}
+    function halt(){clearInterval(timer);timer=0}
+    new IntersectionObserver(function(es){es[0].isIntersecting?run():halt()}).observe(cv);
+    toggle.addEventListener('click',function(){still()?halt():run()});
+  })();
+
+  /* Beam-card：圓點虛線外框 + 一段 10 顆實心點，一步跳一顆 */
+  document.querySelectorAll('.beam>svg.trail').forEach(function(svg){
+    var card=svg.parentElement,rs=svg.querySelectorAll('rect');
+    function fit(){
+      var w=card.clientWidth-2,h=card.clientHeight-2;if(w<=0)return;
+      rs.forEach(function(r){r.setAttribute('width',w);r.setAttribute('height',h)});
+      var len=rs[1].getTotalLength(),dash=[];for(var k=0;k<9;k++)dash.push(0,6);dash.push(0,Math.max(1,len-54));
+      rs[1].setAttribute('stroke-dasharray',dash.join(' '));
+      rs[1].style.setProperty('--len',len+'px');rs[1].style.setProperty('--n',Math.max(1,Math.round(len/6)));
+    }
+    fit();if(window.ResizeObserver)new ResizeObserver(fit).observe(card);
+  });
+})();
+</script>
+</body>
+</html>
